@@ -4,6 +4,7 @@ import LOGIN from "./Auth/login";
 import AddCustomer from "./Components/customer/addCustomer";
 import AddAcMotor from "./Components/AcMotor/AddMotor";
 import ViewJob from "./Components/AcMotor/viewJob";
+import JobCreation from "./Components/AcMotor/JobCreation";
 
 function App() {
 	return (
@@ -19,6 +20,7 @@ function App() {
 					/>
 					<Route path="/addmotor" exact element={<AddAcMotor />} />
 					<Route path="/job/:id" exact element={<ViewJob />} />
+					<Route path="newjob" exact element={<JobCreation />} />
 				</Routes>
 			</BrowserRouter>
 		</div>

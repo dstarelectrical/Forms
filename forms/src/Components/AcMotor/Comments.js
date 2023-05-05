@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Comments({ jobID, view }) {
-	const [comments, setComments] = useState(false);
+	const [comments, setComments] = useState("");
 
 	useEffect(() => {
 		if (view === true) {
@@ -35,9 +35,9 @@ function Comments({ jobID, view }) {
 		<Panel
 			defaultExpanded
 			bordered
-			style={{ float: "left", width: "100%", margin: "10px" }}
-			header={<h3>Comments</h3>}
+			style={{ float: "left", width: "100%", margin: "3px" }}
 		>
+			<h5>Comments</h5>
 			{!view ? (
 				<div>
 					<Input

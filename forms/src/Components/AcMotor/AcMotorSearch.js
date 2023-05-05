@@ -22,6 +22,8 @@ function AcMotorSearch({ pullMotor }) {
 	let navigate = useNavigate();
 	const [selected, setSelected] = useState("");
 	const [bool, setBool] = useState(false);
+	const [hpkwValue, sethpkwValue] = useState("");
+	const [visible, setVisible] = useState(false);
 
 	const handleSearchClick = () => {
 		axios({
@@ -33,9 +35,16 @@ function AcMotorSearch({ pullMotor }) {
 				hpkw: hpKw,
 				enclosure: enclosure,
 				rpm: rpm,
+				hpkwValue: hpkwValue,
 			},
 		}).then((res) => {
 			setMotors(res.data);
+			if (res.status === 200 && res.data.length === 0) {
+				console.log("hello");
+				setVisible(true);
+			} else {
+				setVisible(false);
+			}
 			console.log(res.data);
 		});
 	};
@@ -46,7 +55,17 @@ function AcMotorSearch({ pullMotor }) {
 	}));
 
 	const handleAddClick = () => {
-		navigate("/addmotor");
+		navigate("/addmotor", {
+			state: {
+				volts: volts,
+				frame: frame,
+				hpkw: hpKw,
+				enclosure: enclosure,
+				rpm: rpm,
+				hpkwValue: hpkwValue,
+				edit: false,
+			},
+		});
 	};
 
 	const enclosureData = ["ODP", "TEFC", "TENV", "EX.P", "Other"].map(
@@ -63,14 +82,118 @@ function AcMotorSearch({ pullMotor }) {
 		pullMotor(motor);
 	};
 
+	const keyRight = { fontWeight: "bold", fontSize: "17px" };
+	const valueRight = {
+		fontSize: "17px",
+		marginLeft: "5px",
+	};
+
+	const getFormattedMotor = (motor) => {
+		return (
+			<div style={{ display: "flex", marginTop: "5px" }}>
+				<div style={{ width: "25%" }}>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Manufacturer:</div>
+						<div style={valueRight}>{motor["manufacturer"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Serial#:</div>
+						<div style={valueRight}>{motor["serial"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Model:</div>
+						<div style={valueRight}>{motor["model"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Frame:</div>
+						<div style={valueRight}>{motor["frame"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>RPM:</div>
+						<div style={valueRight}>{motor["rpm"]}</div>
+					</div>
+				</div>
+				<div style={{ width: "25%" }}>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Hp/KW:</div>
+						<div style={valueRight}>{motor["hpkw"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Enclosure:</div>
+						<div style={valueRight}>{motor["enclosure"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Volts:</div>
+						<div style={valueRight}>{motor["volts"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Amps:</div>
+						<div style={valueRight}>{motor["amps"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Measurement:</div>
+						<div style={valueRight}>{motor["measurement"]}</div>
+					</div>
+				</div>
+				<div style={{ width: "25%" }}>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Hp/KW Value:</div>
+						<div style={valueRight}>{motor["hpkwValue"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Phase:</div>
+						<div style={valueRight}>{motor["phase"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Class:</div>
+						<div style={valueRight}>{motor["_class"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Amb.Temp:</div>
+						<div style={valueRight}>{motor["ambTemp"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Time Rating:</div>
+						<div style={valueRight}>{motor["timeRating"]}</div>
+					</div>
+				</div>
+				<div style={{ width: "25%" }}>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Cycles:</div>
+						<div style={valueRight}>{motor["cycles"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>DIV:</div>
+						<div style={valueRight}>{motor["div"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Eyebolt:</div>
+						<div style={valueRight}>{motor["eyebolt"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Fitted With:</div>
+						<div style={valueRight}>{motor["fittedWith"]}</div>
+					</div>
+					<div style={{ display: "flex" }}>
+						<div style={keyRight}>Fitted With:</div>
+						<div style={valueRight}>{motor["inOut"]}</div>
+					</div>
+				</div>
+			</div>
+		);
+	};
+
 	return (
 		<div style={{ marginTop: "5px" }}>
 			<h4 style={{ marginBottom: "5px" }}>Motor</h4>
 			{!bool ? (
 				<div>
 					<div>
-						<Stack spacing={6} style={{ marginBottom: "5px" }}>
-							Volts:
+						<Stack spacing={10} style={{ marginBottom: "5px" }}>
+							<div style={{ width: "125px", textAlign: "right" }}>
+								Volts:
+							</div>
+
 							<Input
 								placeholder="volts"
 								value={volts}
@@ -81,8 +204,11 @@ function AcMotorSearch({ pullMotor }) {
 							/>
 						</Stack>
 
-						<Stack spacing={6} style={{ marginBottom: "5px" }}>
-							Frame:
+						<Stack spacing={10} style={{ marginBottom: "5px" }}>
+							<div style={{ width: "125px", textAlign: "right" }}>
+								Frame:
+							</div>
+
 							<Input
 								placeholder="frame"
 								value={frame}
@@ -93,8 +219,11 @@ function AcMotorSearch({ pullMotor }) {
 							/>
 						</Stack>
 
-						<Stack spacing={6} style={{ marginBottom: "5px" }}>
-							RPM:
+						<Stack spacing={10} style={{ marginBottom: "5px" }}>
+							<div style={{ width: "125px", textAlign: "right" }}>
+								RPM:
+							</div>
+
 							<Input
 								placeholder="rpm"
 								value={rpm}
@@ -105,8 +234,11 @@ function AcMotorSearch({ pullMotor }) {
 							/>
 						</Stack>
 
-						<Stack spacing={6} style={{ marginBottom: "5px" }}>
-							Enclosure:
+						<Stack spacing={10} style={{ marginBottom: "5px" }}>
+							<div style={{ width: "125px", textAlign: "right" }}>
+								Enclosure:
+							</div>
+
 							<InputPicker
 								data={enclosureData}
 								value={enclosure}
@@ -118,8 +250,11 @@ function AcMotorSearch({ pullMotor }) {
 							/>
 						</Stack>
 
-						<Stack spacing={6} style={{ marginBottom: "5px" }}>
-							Hp/KW:
+						<Stack spacing={10} style={{ marginBottom: "5px" }}>
+							<div style={{ width: "125px", textAlign: "right" }}>
+								Hp/KW:
+							</div>
+
 							<InputPicker
 								data={HPKWData}
 								value={hpKw}
@@ -129,9 +264,20 @@ function AcMotorSearch({ pullMotor }) {
 								placeholder="Hp/KW"
 								style={{ width: "200px" }}
 							/>
+							<div style={{ width: "125px", textAlign: "right" }}>
+								Hp/KW value:
+							</div>
+							<Input
+								placeholder="value"
+								value={hpkwValue}
+								onChange={(e) => {
+									sethpkwValue(e);
+								}}
+								style={{ width: "200px" }}
+							/>
 						</Stack>
 
-						<Stack spacing={6}>
+						<Stack spacing={10}>
 							<Stack.Item grow={1}>
 								<IconButton
 									style={{ width: "100%" }}
@@ -140,8 +286,20 @@ function AcMotorSearch({ pullMotor }) {
 								/>
 							</Stack.Item>
 
-							<Button onClick={handleAddClick}>Add Motor</Button>
+							<Button
+								appearance="primary"
+								onClick={handleAddClick}
+							>
+								Add Motor
+							</Button>
 						</Stack>
+						{visible ? (
+							<div style={{ textAlign: "center", width: "100%" }}>
+								<h5>No Results Found</h5>
+							</div>
+						) : (
+							<div></div>
+						)}
 					</div>
 
 					{motors.map((motor) => (
@@ -152,23 +310,20 @@ function AcMotorSearch({ pullMotor }) {
 							header={motor.manufacturer}
 							style={{ marginTop: "5px" }}
 						>
-							manufacturer: {motor["manufacturer"]} <br />
-							volts: {motor["volts"]} <br />
-							frame: {motor["frame"]} <br />
-							rpm: {motor["rpm"]} <br />
-							enclosure: {motor["enclosure"]} <br />
-							Hp/KW: {motor["hpkw"]} <br />
-							<Button
-								style={{
-									float: "right",
-									marginRight: "10px",
-									marginBottom: "10px",
-								}}
-								appearance="primary"
-								onClick={(e) => handleSelectedClick(motor)}
-							>
-								Select
-							</Button>
+							{getFormattedMotor(motor)}
+							<Stack spacing={10}>
+								<Button
+									style={{
+										float: "right",
+										marginRight: "10px",
+										marginBottom: "10px",
+									}}
+									appearance="primary"
+									onClick={(e) => handleSelectedClick(motor)}
+								>
+									Select
+								</Button>
+							</Stack>
 						</Panel>
 					))}
 				</div>
@@ -180,12 +335,7 @@ function AcMotorSearch({ pullMotor }) {
 					header={"Selected Motor: " + selected["manufacturer"]}
 					style={{ marginTop: "10px" }}
 				>
-					manufacturer: {selected["manufacturer"]} <br />
-					volts: {selected["volts"]} <br />
-					frame: {selected["frame"]} <br />
-					rpm: {selected["rpm"]} <br />
-					enclosure: {selected["enclosure"]} <br />
-					Hp/KW: {selected["hpkw"]} <br />
+					{getFormattedMotor(selected)}
 				</Panel>
 			)}
 		</div>

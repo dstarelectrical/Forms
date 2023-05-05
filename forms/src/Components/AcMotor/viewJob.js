@@ -57,8 +57,8 @@ function ViewJob() {
 		const input = document.getElementById("print");
 		html2canvas(input).then((canvas) => {
 			const imgData = canvas.toDataURL("image/png");
-			var imgWidth = 200;
-			var pageHeight = 300;
+			var imgWidth = 175;
+			var pageHeight = 325;
 			var imgHeight = (canvas.height * imgWidth) / canvas.width;
 			var heightLeft = imgHeight;
 
@@ -79,8 +79,11 @@ function ViewJob() {
 	};
 
 	return (
-		<div style={{ width: "50%" }}>
+		<div style={{ width: "720px" }}>
 			<div id="print" style={{ display: "inline-block" }}>
+				<h4 style={{ textAlign: "center" }}>
+					AC Motor Report(Inspection)
+				</h4>
 				{viewJobDet ? <DisplayJobDetails jobDet={job} /> : <div></div>}
 				{viewCondition ? (
 					<Condition jobID={id} view={true} />

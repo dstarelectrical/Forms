@@ -13,7 +13,9 @@ def createCustomer(request):
         data = request.data
         print(request.data)
         id_ = str(uuid.uuid4())
-        customer = Customer(id=id_, customer=data['customer'], email=data["email"], phone=data["phone"], address=data["address"])
+        customer = Customer(id=id_)
+        for k, v in data.items():
+            setattr(customer, k, v)
         customer.save()
         serialzer = CustomerSerializer(customer)
         return JsonResponse(serialzer.data, safe=False)

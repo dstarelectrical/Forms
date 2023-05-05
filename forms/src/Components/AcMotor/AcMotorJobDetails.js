@@ -15,6 +15,7 @@ function JobDetails({ pullDetails }) {
 	const [comments, setComments] = useState("");
 	const [missing, setMissing] = useState("");
 	const [signature, setSignature] = useState("");
+	const [eyeboltDamaged, setEyeboltDamaged] = useState("");
 
 	const quoteData = ["Yes", "No"].map((item) => ({
 		label: item,
@@ -23,7 +24,7 @@ function JobDetails({ pullDetails }) {
 
 	const equipmentData = [
 		"1Phase AC Motor",
-		"2Phase AC Motor",
+		"3Phase AC Motor",
 		"AC Stator",
 		"AC Rotor",
 	].map((item) => ({
@@ -52,6 +53,14 @@ function JobDetails({ pullDetails }) {
 		value: item,
 	}));
 
+	const getSpecificTime = () => {
+		if (urgency !== "Specific Time") {
+			return specificTime;
+		} else {
+			return "";
+		}
+	};
+
 	let query = {
 		equipment: equipment,
 		application: application,
@@ -62,8 +71,9 @@ function JobDetails({ pullDetails }) {
 		customerComments: comments,
 		partsMissing: missing,
 		signature: signature,
-		specificDate: specificTime,
+		specificDate: getSpecificTime(),
 		pictures: pictures,
+		eyeboltDamaged: eyeboltDamaged,
 	};
 
 	return (
@@ -158,6 +168,18 @@ function JobDetails({ pullDetails }) {
 				/>
 			</Stack>
 			<Stack spacing={6} style={{ marginBottom: "5px" }}>
+				Eyebolt Damaged:
+				<InputPicker
+					data={quoteData}
+					value={eyeboltDamaged}
+					onChange={(e) => {
+						setEyeboltDamaged(e);
+						pullDetails(query);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
+			<Stack spacing={6} style={{ marginBottom: "5px" }}>
 				Customer Comments:
 				<Stack.Item grow={1}>
 					<Input
@@ -170,6 +192,7 @@ function JobDetails({ pullDetails }) {
 					/>
 				</Stack.Item>
 			</Stack>
+
 			<Stack spacing={6} style={{ marginBottom: "5px" }}>
 				Parts Missing Or Broken:
 				<Stack.Item grow={1}>

@@ -7,41 +7,114 @@ import {
 	Button,
 	InputGroup,
 	InputPicker,
+	useToaster,
+	Message,
+	Stack,
 } from "rsuite";
 import axios from "axios";
 import SearchIcon from "@rsuite/icons/Search";
+import AcMotorSearch from "./AcMotorSearch";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function AddAcMotor() {
-	const [formVal, setFormVal] = useState({
-		manufacturer: "",
-		serial: "",
-		model: "",
-		rpm: "",
-		frame: "",
-		hpkw: "",
-		volts: "",
-		amps: "",
-		phase: "",
-		_class: "",
-		ambTemp: "",
-		timeRating: "",
-		cycles: "",
-		div: "",
-		enclosure: "",
-		eyebolt: "",
-		eyeboltDamaged: "",
-		fittedWith: "",
-		inOut: "",
-		measurement: "",
-		enclosureOther: "",
-		fittedWithOther: "",
-	});
+	const [manufacturer, setManufacturer] = useState("");
+	const [serial, setSerial] = useState("");
+	const [model, setModel] = useState("");
+	const [rpm, setRPM] = useState("");
+	const [frame, setFrame] = useState("");
+	const [hpkw, setHpkw] = useState("");
+	const [hpkwValue, sethpkwValue] = useState("");
+	const [volts, setVolts] = useState("");
+	const [phase, setPhase] = useState("");
+	const [_class, setClass] = useState("");
+	const [ambTemp, setAmbTemp] = useState("");
+	const [timeRating, setTimeRating] = useState("");
+	const [cycles, setCycles] = useState("");
+	const [div, setDiv] = useState("");
+	const [enclosure, setEnclosure] = useState("");
+	const [eyebolt, setEyebolt] = useState("");
+	const [eyeboltDamaged, setEyeDamaged] = useState("");
+	const [fittedWith, setFitted] = useState("");
+	const [inOut, setInout] = useState("");
+	const [measurement, setMeasurement] = useState("");
+	const [enclosureOther, setEnclosureOther] = useState("");
+	const [fittedWithOther, setFittedOther] = useState("");
+	const [amps, setAmps] = useState("");
+	const [edit, setEdit] = useState(false);
+	const [id, setId] = useState("");
+	const [jobId, setJobId] = useState("");
+	const toaster = useToaster();
+	const location = useLocation();
 
-	const eyeboltDamagedData = ["Yes", "No"].map((item) => ({
-		label: item,
-		value: item,
-	}));
+	const setParams = (params) => {
+		if (params.edit === true) {
+			setManufacturer(params.manufacturer);
+			setSerial(params.serial);
+			setRPM(params.rpm);
+			setFrame(params.frame);
+			setHpkw(params.hpkw);
+			sethpkwValue(params.hpkwValue);
+			setPhase(params.phase);
+			setClass(params._class);
+			setAmbTemp(params.ambTemp);
+			setTimeRating(params.timeRating);
+			setCycles(params.cycles);
+			setDiv(params.div);
+			setEnclosure(params.enclosure);
+			setEyebolt(params.eyebolt);
+			setEyeDamaged(params.eyeboltDamaged);
+			setFitted(params.fittedWith);
+			setInout(params.inOut);
+			setMeasurement(params.measurement);
+			setEnclosureOther(params.enclosureOther);
+			setFittedOther(params.fittedWithOther);
+			setEdit(params.edit);
+			setVolts(params.volts);
+			setModel(params.model);
+			setAmps(params.amps);
+			setId(params.id);
+			setJobId(params.jobId);
+			setEdit(params.edit);
+		} else {
+			setRPM(params.rpm);
+			setFrame(params.frame);
+			setHpkw(params.hpkw);
+			sethpkwValue(params.hpkwValue);
+			setEnclosure(params.enclosure);
+		}
+	};
 
+	useEffect(() => {
+		setParams(location.state);
+	}, []);
+
+	const getQuery = () => {
+		let query = {
+			manufacturer: manufacturer,
+			serial: serial,
+			model: model,
+			rpm: rpm,
+			frame: frame,
+			hpkw: hpkw,
+			hpkwValue: hpkwValue,
+			volts: volts,
+			amps: amps,
+			phase: phase,
+			_class: _class,
+			ambTemp: ambTemp,
+			timeRating: timeRating,
+			cycles: cycles,
+			div: div,
+			enclosure: enclosure,
+			eyebolt: eyebolt,
+			fittedWith: fittedWith,
+			inOut: inOut,
+			measurement: measurement,
+			encloseOther: enclosureOther,
+			fittedOther: fittedWithOther,
+		};
+		return query;
+	};
 	const eyeboltData = ["Yes", "No"].map((item) => ({
 		label: item,
 		value: item,
@@ -75,160 +148,351 @@ function AddAcMotor() {
 		value: item,
 	}));
 
+	const notifySuccessPost = (message) => {
+		toaster.push(<Message type="success">{message}</Message>, {
+			placement: "topEnd",
+			duration: 5000,
+		});
+	};
+
+	const notifyFailedPost = (error) => {
+		toaster.push(<Message type="error">{error}</Message>, {
+			placement: "topEnd",
+			duration: 5000,
+		});
+	};
+
+	let navigate = useNavigate();
+
 	const handleSaveClick = () => {
-		console.log(formVal);
+		console.log(getQuery());
 		axios({
 			method: "post",
 			url: "http://127.0.0.1:8000/acmotors/add/",
-			data: formVal,
+			data: getQuery(),
 		}).then((res) => {
 			console.log(res);
+			if (res.status === 200) {
+				// window.location.reload(true);
+				notifySuccessPost("motor created successfully");
+			} else if (res.status !== 200) {
+				notifyFailedPost("error creating a motor");
+			}
+		});
+	};
+
+	const handleEditClick = () => {
+		let data = {
+			id: id,
+			jobId: jobId,
+			...getQuery(),
+		};
+		axios({
+			method: "post",
+			url: "http://127.0.0.1:8000/acmotors/add/",
+			data: data,
+		}).then((res) => {
+			if (res.status === 200) {
+				navigate(`/job/${jobId}`);
+				notifySuccessPost("motor edited successfully");
+			} else if (res.status !== 200) {
+				notifyFailedPost("error editing the motor");
+			}
 		});
 	};
 
 	return (
-		<Panel
-			bordered
-			collapsible
-			style={{ margin: "10px" }}
-			header="Add AC Motor"
-		>
-			<Form onChange={setFormVal} layout="horizontal">
-				<Form.Group controlId="manufacturer">
-					<Form.ControlLabel>Manufacturer</Form.ControlLabel>
-					<Form.Control name="manufacturer" />
-				</Form.Group>
-				<Form.Group controlId="serial">
-					<Form.ControlLabel>Serial#</Form.ControlLabel>
-					<Form.Control name="serial" />
-				</Form.Group>
-				<Form.Group controlId="model">
-					<Form.ControlLabel>Model</Form.ControlLabel>
-					<Form.Control name="model" />
-				</Form.Group>
+		<Panel bordered style={{ margin: "10px" }} header="Add AC Motor">
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>
+					Manufacturer:
+				</div>
+				<Input
+					value={manufacturer}
+					onChange={(e) => {
+						setManufacturer(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>
+					Serial#:
+				</div>
+				<Input
+					value={serial}
+					onChange={(e) => {
+						setSerial(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>Model:</div>
 
-				<Form.Group controlId="rpm">
-					<Form.ControlLabel>RPM</Form.ControlLabel>
-					<Form.Control name="rpm" />
-				</Form.Group>
+				<Input
+					value={model}
+					onChange={(e) => {
+						setModel(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
 
-				<Form.Group controlId="frame">
-					<Form.ControlLabel>Frame</Form.ControlLabel>
-					<Form.Control name="frame" />
-				</Form.Group>
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>RPM:</div>
 
-				<Form.Group controlId="hpkw">
-					<Form.ControlLabel>HP/kW</Form.ControlLabel>
-					<Form.Control
-						name="hpkw"
-						accepter={InputPicker}
-						data={HPKWData}
-					/>
-				</Form.Group>
+				<Input
+					value={rpm}
+					onChange={(e) => {
+						setRPM(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
 
-				<Form.Group controlId="volts">
-					<Form.ControlLabel>Volts</Form.ControlLabel>
-					<Form.Control name="volts" />
-				</Form.Group>
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>Frame:</div>
 
-				<Form.Group controlId="amps">
-					<Form.ControlLabel>Amps</Form.ControlLabel>
-					<Form.Control name="amps" />
-				</Form.Group>
+				<Input
+					value={frame}
+					onChange={(e) => {
+						setFrame(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
 
-				<Form.Group controlId="phase">
-					<Form.ControlLabel>Phase</Form.ControlLabel>
-					<Form.Control name="phase" />
-				</Form.Group>
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>HP/kW:</div>
 
-				<Form.Group controlId="_class">
-					<Form.ControlLabel>Class</Form.ControlLabel>
-					<Form.Control name="_class" />
-				</Form.Group>
+				<InputPicker
+					value={hpkw}
+					data={HPKWData}
+					onChange={(e) => {
+						setHpkw(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+				<div style={{ width: "125px", textAlign: "right" }}>
+					HP/kW Value
+				</div>
+				<Input
+					value={hpkwValue}
+					onChange={(e) => {
+						sethpkwValue(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
 
-				<Form.Group controlId="ambTemp">
-					<Form.ControlLabel>Amb.Temp</Form.ControlLabel>
-					<Form.Control name="ambTemp" />
-				</Form.Group>
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>Volts:</div>
 
-				<Form.Group controlId="timeRating">
-					<Form.ControlLabel>Time Rating</Form.ControlLabel>
-					<Form.Control name="timeRating" />
-				</Form.Group>
+				<Input
+					value={volts}
+					onChange={(e) => {
+						setVolts(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
 
-				<Form.Group controlId="cycles">
-					<Form.ControlLabel>Cycles</Form.ControlLabel>
-					<Form.Control name="cycles" />
-				</Form.Group>
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>Amps:</div>
 
-				<Form.Group controlId="div">
-					<Form.ControlLabel>DIV</Form.ControlLabel>
-					<Form.Control name="div" />
-				</Form.Group>
+				<Input
+					value={amps}
+					onChange={(e) => {
+						setAmps(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
 
-				<Form.Group controlId="enclosure">
-					<Form.ControlLabel>Enclosure</Form.ControlLabel>
-					<Form.Control
-						name="enclosure"
-						accepter={InputPicker}
-						data={enclosureData}
-					/>
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>Phase:</div>
 
-					<Form.ControlLabel>Other</Form.ControlLabel>
-					<Form.Control
-						disabled={formVal.enclosure !== "Other"}
-						name="enclosureOther"
-					/>
-				</Form.Group>
+				<Input
+					value={phase}
+					onChange={(e) => {
+						setPhase(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
 
-				<Form.Group controlId="eyebolt">
-					<Form.ControlLabel>Eyebolt</Form.ControlLabel>
-					<Form.Control
-						name="eyebolt"
-						accepter={InputPicker}
-						data={eyeboltData}
-					/>
-				</Form.Group>
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>Class:</div>
 
-				<Form.Group controlId="eyeboltDamaged">
-					<Form.ControlLabel>Eyebolt Damaged</Form.ControlLabel>
-					<Form.Control
-						name="eyeboltDamaged"
-						accepter={InputPicker}
-						data={eyeboltDamagedData}
-					/>
-				</Form.Group>
+				<Input
+					value={_class}
+					onChange={(e) => {
+						setClass(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
 
-				<Form.Group controlId="fittedWith">
-					<Form.ControlLabel>Fitted With</Form.ControlLabel>
-					<Form.Control
-						name="fittedWith"
-						accepter={InputPicker}
-						data={fittedWithData}
-					/>
-					<Form.ControlLabel>Other</Form.ControlLabel>
-					<Form.Control
-						disabled={formVal.fittedWith !== "Other"}
-						name="fittedWithOther"
-					/>
-				</Form.Group>
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>
+					Amb.Temp:
+				</div>
 
-				<Form.Group controlId="inOut">
-					<Form.ControlLabel>Fitted With</Form.ControlLabel>
-					<Form.Control
-						name="inOut"
-						accepter={InputPicker}
-						data={inOutData}
-					/>
-				</Form.Group>
+				<Input
+					value={ambTemp}
+					onChange={(e) => {
+						setAmbTemp(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
 
-				<Form.Group controlId="measurement">
-					<Form.ControlLabel>Measurement</Form.ControlLabel>
-					<Form.Control name="measurement" />
-				</Form.Group>
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>
+					Time Rating:
+				</div>
 
+				<Input
+					value={timeRating}
+					onChange={(e) => {
+						setTimeRating(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
+
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>
+					Cycles:
+				</div>
+
+				<Input
+					value={cycles}
+					onChange={(e) => {
+						setCycles(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
+
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>DIV:</div>
+
+				<Input
+					value={div}
+					onChange={(e) => {
+						setDiv(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
+
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>
+					Enclosure:
+				</div>
+
+				<InputPicker
+					value={enclosure}
+					data={enclosureData}
+					onChange={(e) => {
+						setEnclosure(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+				<div style={{ width: "125px", textAlign: "right" }}>Other:</div>
+				<Input
+					disabled={enclosure !== "Other"}
+					value={enclosureOther}
+					onChange={(e) => {
+						setEnclosureOther(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
+
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>
+					Eyebolt:
+				</div>
+
+				<InputPicker
+					value={eyebolt}
+					data={eyeboltData}
+					onChange={(e) => {
+						setEyebolt(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+				{/* <div style={{ width: "125px", textAlign: "right" }}>
+					Eyebolt Damaged:
+				</div>
+				<InputPicker
+					value={eyeboltDamaged}
+					data={eyeboltDamagedData}
+					onChange={(e) => {
+						setEyeDamaged(e);
+					}}
+					style={{ width: "200px" }}
+				/> */}
+			</Stack>
+
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>
+					Fitted With:
+				</div>
+				<InputPicker
+					value={fittedWith}
+					data={fittedWithData}
+					onChange={(e) => {
+						setFitted(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+				<div style={{ width: "125px", textAlign: "right" }}>Other:</div>
+				<Input
+					disabled={fittedWith !== "Other"}
+					value={fittedWithOther}
+					onChange={(e) => {
+						setFittedOther(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
+
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>
+					Fitted With:
+				</div>
+				<InputPicker
+					value={inOut}
+					data={inOutData}
+					onChange={(e) => {
+						setInout(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
+
+			<Stack spacing={10} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "125px", textAlign: "right" }}>
+					Measurement:
+				</div>
+				<Input
+					value={measurement}
+					onChange={(e) => {
+						setMeasurement(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
+
+			{!edit ? (
 				<Button onClick={handleSaveClick}>Save</Button>
-			</Form>
+			) : (
+				<Button onClick={handleEditClick}>Edit</Button>
+			)}
 		</Panel>
 	);
 }

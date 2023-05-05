@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Input, Button, Panel, Checkbox } from "rsuite";
+import { Input, Button, Panel, Checkbox, Stack } from "rsuite";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -19,6 +19,8 @@ function DismantleInspection({ jobID, view }) {
 	const [mechFit, setMechFit] = useState(false);
 	const [failure, setFailure] = useState(false);
 
+	const [signature, setSignature] = useState("");
+
 	useEffect(() => {
 		if (view === true) {
 			axios({
@@ -37,6 +39,7 @@ function DismantleInspection({ jobID, view }) {
 				setOil(res.data.oil);
 				setMechFit(res.data.mechFit);
 				setFailure(res.data.failure);
+				setSignature(res.data.signature);
 			});
 		}
 	}, []);
@@ -55,6 +58,7 @@ function DismantleInspection({ jobID, view }) {
 			oil: oil,
 			mechFit: mechFit,
 			failure: failure,
+			signature: signature,
 		};
 		axios({
 			method: "post",
@@ -67,12 +71,22 @@ function DismantleInspection({ jobID, view }) {
 	};
 
 	return (
-		<Panel
-			defaultExpanded
+		<div
 			bordered
-			style={{ float: "left", width: "100%", margin: "10px" }}
-			header="Dismantle and Inspection"
+			style={{
+				float: "left",
+				width: "355px",
+				marginLeft: "3px",
+				marginTop: "3px",
+				height: "476px",
+				borderTopWidth: "1px",
+				borderTopStyle: "solid",
+				borderTopColor: "grey",
+				padding: "5px",
+			}}
 		>
+			{/* border: "1px solid grey", borderRadius: "5px", padding: "5px", */}
+			<h5>Dismantle and Inspection</h5>
 			<Checkbox
 				readOnly={view}
 				checked={dismantle}
@@ -94,118 +108,121 @@ function DismantleInspection({ jobID, view }) {
 			>
 				Dismantle Motor
 			</Checkbox>
-			{dismantle ? (
+			<div style={{ marginLeft: "30px" }}>
+				<Checkbox
+					readOnly={view}
+					checked={pictures}
+					onChange={(e) => setPictures(!pictures)}
+				>
+					Take Pictures for every part dismantled
+				</Checkbox>
+				<br />
+				<Checkbox
+					readOnly={view}
+					checked={electrical}
+					onChange={(e) => {
+						if (electrical === true) {
+							setInsulation(false);
+							setWinding(false);
+							setSurge(false);
+							setRecordData(false);
+						}
+						setElectrical(!electrical);
+					}}
+				>
+					Perform Electrical Test
+				</Checkbox>
+
 				<div style={{ marginLeft: "30px" }}>
 					<Checkbox
 						readOnly={view}
-						checked={pictures}
-						onChange={(e) => setPictures(!pictures)}
+						checked={insulation}
+						onChange={(e) => setInsulation(!insulation)}
 					>
-						Take Pictures for every part dismantled
+						Insulation Resistance
 					</Checkbox>
-					<br />
 					<Checkbox
 						readOnly={view}
-						checked={electrical}
-						onChange={(e) => {
-							if (electrical === true) {
-								setInsulation(false);
-								setWinding(false);
-								setSurge(false);
-								setRecordData(false);
-							}
-							setElectrical(!electrical);
-						}}
+						checked={winding}
+						onChange={(e) => setWinding(!winding)}
 					>
-						Perform Electrical Test
+						Winding Resistance
 					</Checkbox>
-					{electrical ? (
-						<div style={{ marginLeft: "30px" }}>
-							<Checkbox
-								readOnly={view}
-								checked={insulation}
-								onChange={(e) => setInsulation(!insulation)}
-							>
-								Insulation Resistance
-							</Checkbox>
-							<Checkbox
-								readOnly={view}
-								checked={winding}
-								onChange={(e) => setWinding(!winding)}
-							>
-								Winding Resistance
-							</Checkbox>
-							<Checkbox
-								readOnly={view}
-								checked={surge}
-								onChange={(e) => setSurge(!surge)}
-							>
-								Surge Test
-							</Checkbox>
-							<Checkbox
-								readOnly={view}
-								checked={recordData}
-								onChange={(e) => setRecordData(!recordData)}
-							>
-								Record data in report
-							</Checkbox>
-						</div>
-					) : (
-						<div></div>
-					)}
 					<Checkbox
 						readOnly={view}
-						checked={mechanical}
-						onChange={(e) => {
-							if (mechanical === true) {
-								setBearings(false);
-								setOil(false);
-								setMechFit(false);
-								setFailure(false);
-							}
-							setMechanical(!mechanical);
-						}}
+						checked={surge}
+						onChange={(e) => setSurge(!surge)}
 					>
-						Perform Mechanical Inspection
+						Surge Test
 					</Checkbox>
-					{mechanical ? (
-						<div style={{ marginLeft: "30px" }}>
-							<Checkbox
-								readOnly={view}
-								checked={bearings}
-								onChange={(e) => setBearings(!bearings)}
-							>
-								Bearings
-							</Checkbox>
-							<Checkbox
-								readOnly={view}
-								checked={oil}
-								onChange={(e) => setOil(!oil)}
-							>
-								Oil Sealants
-							</Checkbox>
-							<Checkbox
-								readOnly={view}
-								checked={mechFit}
-								onChange={(e) => setMechFit(!mechFit)}
-							>
-								Mechanical fit & measurement
-							</Checkbox>
-							<Checkbox
-								readOnly={view}
-								checked={failure}
-								onChange={(e) => setFailure(!failure)}
-							>
-								Any other information in the failure
-							</Checkbox>
-						</div>
-					) : (
-						<div></div>
-					)}
+					<Checkbox
+						readOnly={view}
+						checked={recordData}
+						onChange={(e) => setRecordData(!recordData)}
+					>
+						Record data in report
+					</Checkbox>
 				</div>
-			) : (
-				<div></div>
-			)}
+
+				<Checkbox
+					readOnly={view}
+					checked={mechanical}
+					onChange={(e) => {
+						if (mechanical === true) {
+							setBearings(false);
+							setOil(false);
+							setMechFit(false);
+							setFailure(false);
+						}
+						setMechanical(!mechanical);
+					}}
+				>
+					Perform Mechanical Inspection
+				</Checkbox>
+
+				<div style={{ marginLeft: "30px" }}>
+					<Checkbox
+						readOnly={view}
+						checked={bearings}
+						onChange={(e) => setBearings(!bearings)}
+					>
+						Bearings
+					</Checkbox>
+					<Checkbox
+						readOnly={view}
+						checked={oil}
+						onChange={(e) => setOil(!oil)}
+					>
+						Oil Sealants
+					</Checkbox>
+					<Checkbox
+						readOnly={view}
+						checked={mechFit}
+						onChange={(e) => setMechFit(!mechFit)}
+					>
+						Mechanical fit & measurement
+					</Checkbox>
+					<Checkbox
+						readOnly={view}
+						checked={failure}
+						onChange={(e) => setFailure(!failure)}
+					>
+						Any other information in the failure
+					</Checkbox>
+				</div>
+				<Stack spacing={6} style={{ marginBottom: "5px" }}>
+					Signature:
+					<Input
+						readOnly={view}
+						placeholder="signature"
+						value={signature}
+						onChange={(e) => {
+							setSignature(e);
+						}}
+						style={{ width: "200px" }}
+					/>
+				</Stack>
+			</div>
 			{!view ? (
 				<Button block onClick={handleSaveClick}>
 					Save
@@ -213,7 +230,7 @@ function DismantleInspection({ jobID, view }) {
 			) : (
 				<div></div>
 			)}
-		</Panel>
+		</div>
 	);
 }
 

@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Input, Button, Panel } from "rsuite";
+import { Input, Button, toaster, Message } from "rsuite";
 import AcMotorSearch from "./AcMotorSearch";
 import CustomerSearch from "../customer/customerSearch";
 import JobDetails from "./AcMotorJobDetails";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function DisplayJobDetails({ jobDet }) {
 	const [job, setJob] = useState(jobDet);
 	const [motor, setMotor] = useState("");
 	const [customer, setCustomer] = useState("");
+	let navigate = useNavigate();
 
 	useEffect(() => {
 		console.log("job", jobDet);
@@ -59,24 +61,39 @@ function DisplayJobDetails({ jobDet }) {
 		marginLeft: "5px",
 	};
 
+	const handleEditClick = (motor) => {
+		navigate("/addmotor", {
+			state: {
+				...motor,
+				jobId: jobDet["id"],
+				edit: true,
+			},
+		});
+	};
+
 	return (
 		<div>
-			<Panel
-				defaultExpanded
-				key={customer.id}
-				bordered
-				header={<h3>Customer: {customer["customer"]}</h3>}
-				style={{ float: "left", width: "100%", margin: "5px" }}
+			<div
+				style={{
+					float: "left",
+					width: "100%",
+					margin: "3px",
+					borderTopWidth: "1px",
+					borderTopStyle: "solid",
+					borderTopColor: "grey",
+					padding: "5px",
+				}}
 			>
-				<div style={{ display: "flex" }}>
-					<div style={{ width: "50%" }}>
+				<h5>Customer: {customer["customer"]}</h5>
+				<div style={{ display: "flex", marginTop: "5px" }}>
+					<div style={{ width: "30%" }}>
 						<div style={{ display: "flex" }}>
 							<div style={keyRight}>Customer:</div>
 							<div style={valueRight}>{customer["customer"]}</div>
 						</div>
 						<div style={{ display: "flex" }}>
-							<div style={keyRight}>email:</div>
-							<div style={valueRight}>{customer["email"]}</div>
+							<div style={keyRight}>phone:</div>
+							<div style={valueRight}>{customer["phone"]}</div>
 						</div>
 					</div>
 					<div style={{ width: "50%" }}>
@@ -84,21 +101,37 @@ function DisplayJobDetails({ jobDet }) {
 							<div style={keyRight}>address:</div>
 							<div style={valueRight}>{customer["address"]}</div>
 						</div>
+
 						<div style={{ display: "flex" }}>
-							<div style={keyRight}>phone:</div>
-							<div style={valueRight}>{customer["phone"]}</div>
+							<div style={keyRight}>email:</div>
+							<div style={valueRight}>{customer["email"]}</div>
+						</div>
+					</div>
+					<div style={{ width: "20%" }}>
+						<div style={{ display: "flex" }}>
+							<div style={keyRight}>job#:</div>
+							<div style={valueRight}>{jobDet["id"]}</div>
+						</div>
+
+						<div style={{ display: "flex" }}>
+							<div style={keyRight}>Shop Job#:</div>
 						</div>
 					</div>
 				</div>
-			</Panel>
-			<Panel
-				defaultExpanded
-				key={job.id}
-				bordered
-				header={<h3>Job Details</h3>}
-				style={{ float: "left", width: "100%", margin: "5px" }}
+			</div>
+			<div
+				style={{
+					float: "left",
+					width: "100%",
+					margin: "3px",
+					borderTopWidth: "1px",
+					borderTopStyle: "solid",
+					borderTopColor: "grey",
+					padding: "5px",
+				}}
 			>
-				<div style={{ display: "flex" }}>
+				<h5>Job Details</h5>
+				<div style={{ display: "flex", marginTop: "5px" }}>
 					<div style={{ width: "50%" }}>
 						<div style={{ display: "flex" }}>
 							<div style={keyRight}>PO Number:</div>
@@ -109,6 +142,12 @@ function DisplayJobDetails({ jobDet }) {
 							<div style={valueRight}>{job["quote"]}</div>
 						</div>
 						<div style={{ display: "flex" }}>
+							<div style={keyRight}>Application:</div>
+							<div style={valueRight}>{getApplication(job)}</div>
+						</div>
+					</div>
+					<div style={{ width: "50%" }}>
+						<div style={{ display: "flex" }}>
 							<div style={keyRight}>Equipment:</div>
 							<div style={valueRight}>{job["equipment"]}</div>
 						</div>
@@ -117,19 +156,21 @@ function DisplayJobDetails({ jobDet }) {
 							<div style={valueRight}>{getUrgency(job)} </div>
 						</div>
 					</div>
+
 					<div style={{ width: "50%" }}>
 						<div style={{ display: "flex" }}>
 							<div style={keyRight}>Pictures:</div>
 							<div style={valueRight}>{job["pictures"]}</div>
 						</div>
-
 						<div style={{ display: "flex" }}>
 							<div style={keyRight}>Signature:</div>
 							<div style={valueRight}>{job["signature"]}</div>
 						</div>
 						<div style={{ display: "flex" }}>
-							<div style={keyRight}>Application:</div>
-							<div style={valueRight}>{getApplication(job)}</div>
+							<div style={keyRight}>eyeboltDamaged:</div>
+							<div style={valueRight}>
+								{motor["eyeboltDamaged"]}
+							</div>
 						</div>
 					</div>
 				</div>
@@ -141,20 +182,21 @@ function DisplayJobDetails({ jobDet }) {
 					<div style={keyRight}>Parts Missing Or Broken:</div>
 					<div style={valueRight}>{job["partsMissing"]}</div>
 				</div>
-			</Panel>
-			<Panel
-				defaultExpanded
-				key={motor.id}
-				bordered
-				header={<h3>Motor: {motor["manufacturer"]}</h3>}
+			</div>
+			<div
 				style={{
 					float: "left",
-					margin: "5px",
+					margin: "3px",
 					width: "100%",
+					borderTopWidth: "1px",
+					borderTopStyle: "solid",
+					borderTopColor: "grey",
+					padding: "5px",
 				}}
 			>
-				<div style={{ display: "flex" }}>
-					<div style={{ width: "50%" }}>
+				<h5>Motor: {motor["manufacturer"]}</h5>
+				<div style={{ display: "flex", marginTop: "5px" }}>
+					<div style={{ width: "25%" }}>
 						<div style={{ display: "flex" }}>
 							<div style={keyRight}>Manufacturer:</div>
 							<div style={valueRight}>
@@ -177,6 +219,8 @@ function DisplayJobDetails({ jobDet }) {
 							<div style={keyRight}>RPM:</div>
 							<div style={valueRight}>{motor["rpm"]}</div>
 						</div>
+					</div>
+					<div style={{ width: "25%" }}>
 						<div style={{ display: "flex" }}>
 							<div style={keyRight}>Hp/KW:</div>
 							<div style={valueRight}>{motor["hpkw"]}</div>
@@ -198,7 +242,11 @@ function DisplayJobDetails({ jobDet }) {
 							<div style={valueRight}>{motor["measurement"]}</div>
 						</div>
 					</div>
-					<div style={{ width: "50%" }}>
+					<div style={{ width: "25%" }}>
+						<div style={{ display: "flex" }}>
+							<div style={keyRight}>Hp/KW Value:</div>
+							<div style={valueRight}>{motor["hpkwValue"]}</div>
+						</div>
 						<div style={{ display: "flex" }}>
 							<div style={keyRight}>Phase:</div>
 							<div style={valueRight}>{motor["phase"]}</div>
@@ -215,6 +263,8 @@ function DisplayJobDetails({ jobDet }) {
 							<div style={keyRight}>Time Rating:</div>
 							<div style={valueRight}>{motor["timeRating"]}</div>
 						</div>
+					</div>
+					<div style={{ width: "25%" }}>
 						<div style={{ display: "flex" }}>
 							<div style={keyRight}>Cycles:</div>
 							<div style={valueRight}>{motor["cycles"]}</div>
@@ -237,7 +287,14 @@ function DisplayJobDetails({ jobDet }) {
 						</div>
 					</div>
 				</div>
-			</Panel>
+				<Button
+					block
+					appearance="primary"
+					onClick={(e) => handleEditClick(motor)}
+				>
+					Edit
+				</Button>
+			</div>
 		</div>
 	);
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Input, Button } from "rsuite";
+import { Input, Button, useToaster, Message } from "rsuite";
 import AcMotorSearch from "./AcMotorSearch";
 import CustomerSearch from "../customer/customerSearch";
 import JobDetails from "./AcMotorJobDetails";
@@ -36,8 +36,8 @@ function JobCreation() {
 	};
 
 	return (
-		<div style={{ margin: "10px" }}>
-			<h4>Create a Job</h4>
+		<div style={{ margin: "20px" }}>
+			<h3 style={{ marginBottom: "20px" }}>Create a Job</h3>
 			<CustomerSearch pullCustomer={(e) => setCustomer(e)} />
 			<AcMotorSearch pullMotor={(e) => setMotor(e)} />
 			<JobDetails pullDetails={(e) => setJobDetailsObj(e)} />

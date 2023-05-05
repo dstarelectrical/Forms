@@ -4,7 +4,7 @@ from . import models
 class AcMotorSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ACMotors
-        fields = ['id','manufacturer', 'serial', 'model', 'rpm', 'frame','hpkw','volts','amps','phase','_class','ambTemp','timeRating','div','enclosure','eyebolt','fittedWith','inOut','measurement','enclosureOther','fittedWithOther', 'cycles']
+        fields = ['id','manufacturer', 'serial', 'model', 'rpm', 'frame','hpkw','volts','amps','phase','_class','ambTemp','timeRating','div','enclosure','eyebolt','fittedWith','inOut','measurement','enclosureOther','fittedWithOther', 'cycles', 'hpkwValue']
 
 class AcMotorJobSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,12 +15,12 @@ class AcMotorJobSerializer(serializers.ModelSerializer):
 class AcConditonSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.AcConditionAssessment
-        fields = ['id', 'job', 'visual', 'pictures', 'missing', 'broken', 'electrical', 'insulation', 'winding', 'turn', 'auxiliary', 'heater']
+        fields = ['id', 'job', 'visual', 'pictures', 'missing', 'broken', 'electrical', 'insulation', 'winding', 'turn', 'auxiliary', 'heater', 'signature']
 
 class AcDismantleInspectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.AcDismantleInspection
-        fields = ['id', 'job', 'dismantle','mechanical', 'pictures', 'bearings', 'oil', 'mechFit', 'failure', 'electrical', 'insulation', 'winding', 'surge', 'recordData']
+        fields = ['id', 'job', 'dismantle','mechanical', 'pictures', 'bearings', 'oil', 'mechFit', 'failure', 'electrical', 'insulation', 'winding', 'surge', 'recordData', 'signature']
 
 class CommentsSerializer(serializers.ModelSerializer):
     class Meta:
