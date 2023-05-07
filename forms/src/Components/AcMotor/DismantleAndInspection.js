@@ -20,6 +20,7 @@ function DismantleInspection({ jobID, view }) {
 	const [failure, setFailure] = useState(false);
 
 	const [signature, setSignature] = useState("");
+	const [comments, setComments] = useState("");
 
 	useEffect(() => {
 		if (view === true) {
@@ -40,6 +41,7 @@ function DismantleInspection({ jobID, view }) {
 				setMechFit(res.data.mechFit);
 				setFailure(res.data.failure);
 				setSignature(res.data.signature);
+				setComments(res.data.comments);
 			});
 		}
 	}, []);
@@ -59,6 +61,7 @@ function DismantleInspection({ jobID, view }) {
 			mechFit: mechFit,
 			failure: failure,
 			signature: signature,
+			comments: comments,
 		};
 		axios({
 			method: "post",
@@ -78,7 +81,7 @@ function DismantleInspection({ jobID, view }) {
 				width: "355px",
 				marginLeft: "3px",
 				marginTop: "3px",
-				height: "476px",
+				height: "525px",
 				borderTopWidth: "1px",
 				borderTopStyle: "solid",
 				borderTopColor: "grey",
@@ -210,6 +213,28 @@ function DismantleInspection({ jobID, view }) {
 						Any other information in the failure
 					</Checkbox>
 				</div>
+				{!view ? (
+					<Stack spacing={6} style={{ marginBottom: "5px" }}>
+						Comments:
+						<Input
+							as="textarea"
+							rows={1}
+							placeholder="Comments"
+							value={comments}
+							onChange={(e) => setComments(e)}
+							style={{ width: "200px" }}
+						/>
+					</Stack>
+				) : (
+					<div
+						style={{
+							fontSize: "17px",
+							marginLeft: "5px",
+						}}
+					>
+						Comments: {comments}
+					</div>
+				)}
 				<Stack spacing={6} style={{ marginBottom: "5px" }}>
 					Signature:
 					<Input

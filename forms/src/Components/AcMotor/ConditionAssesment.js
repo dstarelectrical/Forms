@@ -17,6 +17,7 @@ function Condition({ jobID, view }) {
 	const [heater, setHeater] = useState(false);
 
 	const [signature, setSignature] = useState("");
+	const [comments, setComments] = useState("");
 
 	useEffect(() => {
 		if (view === true) {
@@ -34,6 +35,7 @@ function Condition({ jobID, view }) {
 				setWinding(res.data.winding);
 				setHeater(res.data.winding);
 				setSignature(res.data.signature);
+				setComments(res.data.comments);
 			});
 		}
 	}, []);
@@ -51,6 +53,7 @@ function Condition({ jobID, view }) {
 			auxiliary: auxiliary,
 			heater: heater,
 			signature: signature,
+			comments: comments,
 		};
 		axios({
 			method: "post",
@@ -70,7 +73,7 @@ function Condition({ jobID, view }) {
 				width: "355px",
 				marginLeft: "3px",
 				marginTop: "3px",
-				height: "476px",
+				height: "525px",
 				borderTopWidth: "1px",
 				borderTopStyle: "solid",
 				borderTopColor: "grey",
@@ -171,6 +174,30 @@ function Condition({ jobID, view }) {
 				>
 					Heater Data
 				</Checkbox>
+
+				{!view ? (
+					<Stack spacing={6} style={{ marginBottom: "5px" }}>
+						Comments:
+						<Input
+							as="textarea"
+							rows={1}
+							placeholder="Comments"
+							value={comments}
+							onChange={(e) => setComments(e)}
+							style={{ width: "200px" }}
+						/>
+					</Stack>
+				) : (
+					<div
+						style={{
+							fontSize: "17px",
+							marginLeft: "5px",
+						}}
+					>
+						Comments: {comments}
+					</div>
+				)}
+
 				<Stack spacing={6} style={{ marginBottom: "5px" }}>
 					Signature:
 					<Input

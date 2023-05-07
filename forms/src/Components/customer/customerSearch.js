@@ -19,6 +19,12 @@ function CustomerSearch({ pullCustomer }) {
 	const [bool, setBool] = useState(false);
 	let navigate = useNavigate();
 
+	// useEffect(() => {
+	// 	if (customer !== "") {
+	// 		handleSelectClick(customer);
+	// 	}
+	// }, []);
+
 	const handleSearchClick = () => {
 		console.log(search);
 		axios({

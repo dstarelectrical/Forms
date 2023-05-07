@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Input, Panel, DatePicker, Stack, InputPicker, Button } from "rsuite";
 import axios from "axios";
 
-function JobDetails({ pullDetails }) {
+function JobDetails({ job, pullDetails }) {
 	const [po, setPO] = useState("");
 	const [date, setDate] = useState(new Date());
 	const [quote, setQuote] = useState("");
@@ -16,6 +16,34 @@ function JobDetails({ pullDetails }) {
 	const [missing, setMissing] = useState("");
 	const [signature, setSignature] = useState("");
 	const [eyeboltDamaged, setEyeboltDamaged] = useState("");
+	const [id, setId] = useState("");
+	const [edit, setEdit] = useState(false);
+
+	// const setParams = (params) => {
+	// 	console.log(params);
+	// 	if (params.edit === true) {
+	// 		setId(params.id);
+	// 		setEdit(params.edit);
+	// 		setPO(params.po);
+	// 		setDate(params.date);
+	// 		setQuote(params.quote);
+	// 		setApplication(params.application);
+	// 		setUrgency(params.urgency);
+	// 		setSpecificTime(params.specificTime);
+	// 		setOther(params.other);
+	// 		setPictures(params.pictures);
+	// 		setComments(params.comments);
+	// 		setMissing(params.missing);
+	// 		setSignature(params.signature);
+	// 		setEyeboltDamaged(params.eyeboltDamaged);
+	// 	} else {
+	// 		setEdit(params.edit);
+	// 	}
+	// };
+
+	// useEffect(() => {
+	// 	setParams(job);
+	// }, []);
 
 	const quoteData = ["Yes", "No"].map((item) => ({
 		label: item,

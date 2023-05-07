@@ -1,16 +1,55 @@
 import React, { useState, useEffect } from "react";
-import { Panel, Form, Button, useToaster, Message } from "rsuite";
+import {
+	Panel,
+	Form,
+	Button,
+	useToaster,
+	Message,
+	Input,
+	InputPicker,
+	Stack,
+} from "rsuite";
 import axios from "axios";
 import SearchIcon from "@rsuite/icons/Search";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function AddCustomer() {
-	const [formVal, setFormVal] = useState({
-		customer: "",
-		address: "",
-		email: "",
-		phone: "",
-	});
+	const [customer, setCustomer] = useState("");
+	const [address, setAddress] = useState("");
+	const [email, setEmail] = useState("");
+	const [phone, setPhone] = useState("");
+	const [id, setId] = useState("");
+	const [edit, setEdit] = useState(false);
+	const [jobId, setJobId] = useState("");
 	const toaster = useToaster();
+	const location = useLocation();
+	let navigate = useNavigate();
+
+	const setParams = (params) => {
+		console.log(params);
+		if (params.edit === true) {
+			setAddress(params.address);
+			setCustomer(params.customer);
+			setPhone(params.phone);
+			setEmail(params.email);
+			setId(params.id);
+			setEdit(params.edit);
+			setJobId(params.jobId);
+		} else {
+			setEdit(params.edit);
+		}
+	};
+
+	useEffect(() => {
+		setParams(location.state);
+	}, []);
+
+	const query = {
+		customer: customer,
+		address: address,
+		email: email,
+		phone: phone,
+	};
 
 	const notifySuccessPost = (message) => {
 		toaster.push(<Message type="success">{message}</Message>, {
@@ -27,16 +66,37 @@ function AddCustomer() {
 	};
 
 	const handleSaveClick = () => {
-		console.log(formVal);
 		axios({
 			method: "post",
 			url: "http://127.0.0.1:8000/customer/add/",
-			data: formVal,
+			data: query,
 		})
 			.then((res) => {
 				console.log(res);
 				if (res.status === 200) {
-					notifySuccessPost("motor created successfully");
+					notifySuccessPost("customer created successfully");
+				}
+			})
+			.catch((err) => {
+				notifyFailedPost(err.message);
+			});
+	};
+
+	const handleEditClick = () => {
+		let data = {
+			id: id,
+			...query,
+		};
+		axios({
+			method: "post",
+			url: "http://127.0.0.1:8000/customer/add/",
+			data: data,
+		})
+			.then((res) => {
+				console.log(res);
+				if (res.status === 200) {
+					navigate(`/job/${jobId}`);
+					notifySuccessPost("customer edited successfully");
 				}
 			})
 			.catch((err) => {
@@ -46,29 +106,51 @@ function AddCustomer() {
 
 	return (
 		<Panel bordered style={{ margin: "10px" }} header="Add Customer">
-			<Form onChange={(e) => setFormVal(e)} layout="horizontal">
-				<Form.Group controlId="customer">
-					<Form.ControlLabel>Customer</Form.ControlLabel>
-					<Form.Control name="customer" defaultValue={""} />
-				</Form.Group>
+			<Stack spacing={6} style={{ marginBottom: "5px" }}>
+				Customer:
+				<Input
+					value={customer}
+					onChange={(e) => {
+						setCustomer(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
+			<Stack spacing={6} style={{ marginBottom: "5px" }}>
+				Address:
+				<Input
+					value={address}
+					onChange={(e) => {
+						setAddress(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
+			<Stack spacing={6} style={{ marginBottom: "5px" }}>
+				Email:
+				<Input
+					value={email}
+					onChange={(e) => {
+						setEmail(e);
+					}}
+					style={{ width: "200px" }}
+				/>
+			</Stack>
+			<Stack spacing={6} style={{ marginBottom: "5px" }}>
+				Phone:
+				<Input
+					value={phone}
+					onChange={(e) => {
+						setPhone(e);
+					}}
+				/>
+			</Stack>
 
-				<Form.Group controlId="address">
-					<Form.ControlLabel>Address</Form.ControlLabel>
-					<Form.Control name="address" defaultValue={""} />
-				</Form.Group>
-
-				<Form.Group controlId="email">
-					<Form.ControlLabel>Email</Form.ControlLabel>
-					<Form.Control name="email" defaultValue={""} />
-				</Form.Group>
-
-				<Form.Group controlId="phone">
-					<Form.ControlLabel>Phone</Form.ControlLabel>
-					<Form.Control name="phone" defaultValue={""} />
-				</Form.Group>
-
+			{!edit ? (
 				<Button onClick={handleSaveClick}>Save</Button>
-			</Form>
+			) : (
+				<Button onClick={handleEditClick}>Edit</Button>
+			)}
 		</Panel>
 	);
 }

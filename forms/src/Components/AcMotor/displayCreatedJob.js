@@ -71,6 +71,27 @@ function DisplayJobDetails({ jobDet }) {
 		});
 	};
 
+	const handleEditCustomerClick = (motor) => {
+		navigate("/addcustomer", {
+			state: {
+				...customer,
+				jobId: jobDet["id"],
+				edit: true,
+			},
+		});
+	};
+
+	const handleEditJobClick = () => {
+		navigate("/newjob", {
+			state: {
+				job: job,
+				motor: motor,
+				customer: customer,
+				edit: true,
+			},
+		});
+	};
+
 	return (
 		<div>
 			<div
@@ -118,6 +139,13 @@ function DisplayJobDetails({ jobDet }) {
 						</div>
 					</div>
 				</div>
+				<Button
+					block
+					appearance="primary"
+					onClick={(e) => handleEditCustomerClick()}
+				>
+					Edit
+				</Button>
 			</div>
 			<div
 				style={{
@@ -182,6 +210,13 @@ function DisplayJobDetails({ jobDet }) {
 					<div style={keyRight}>Parts Missing Or Broken:</div>
 					<div style={valueRight}>{job["partsMissing"]}</div>
 				</div>
+				{/* <Button
+					block
+					appearance="primary"
+					onClick={(e) => handleEditJobClick(motor)}
+				>
+					Edit
+				</Button> */}
 			</div>
 			<div
 				style={{

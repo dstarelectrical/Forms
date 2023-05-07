@@ -25,6 +25,12 @@ function AcMotorSearch({ pullMotor }) {
 	const [hpkwValue, sethpkwValue] = useState("");
 	const [visible, setVisible] = useState(false);
 
+	// useEffect(() => {
+	// 	if (motor !== "") {
+	// 		handleSelectedClick(motor);
+	// 	}
+	// }, []);
+
 	const handleSearchClick = () => {
 		axios({
 			method: "get",
