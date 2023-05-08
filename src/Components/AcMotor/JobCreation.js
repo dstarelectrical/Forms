@@ -37,7 +37,7 @@ function JobCreation() {
 		console.log(query);
 		axios({
 			method: "post",
-			url: "http://127.0.0.1:8000/acmotors/newjob/",
+			url: "https://dstarforms.herokuapp.com/acmotors/newjob/",
 			data: query,
 		}).then((res) => {
 			console.log(res);
@@ -59,7 +59,7 @@ function JobCreation() {
 	// 	console.log(query);
 	// 	axios({
 	// 		method: "post",
-	// 		url: "http://127.0.0.1:8000/acmotors/newjob/",
+	// 		url: "https://dstarforms.herokuapp.com/acmotors/newjob/",
 	// 		data: query,
 	// 	}).then((res) => {
 	// 		console.log(res);

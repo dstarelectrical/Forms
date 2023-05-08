@@ -23,7 +23,7 @@ function Condition({ jobID, view }) {
 		if (view === true) {
 			axios({
 				method: "get",
-				url: `http://127.0.0.1:8000/acmotors/accondition/${jobID}/`,
+				url: `https://dstarforms.herokuapp.com/acmotors/accondition/${jobID}/`,
 			}).then((res) => {
 				setVisual(res.data.visual);
 				setMissing(res.data.missing);
@@ -57,7 +57,7 @@ function Condition({ jobID, view }) {
 		};
 		axios({
 			method: "post",
-			url: `http://127.0.0.1:8000/acmotors/accondition/${jobID}/`,
+			url: `https://dstarforms.herokuapp.com/acmotors/accondition/${jobID}/`,
 			data: data,
 		}).then((res) => {
 			console.log(res);

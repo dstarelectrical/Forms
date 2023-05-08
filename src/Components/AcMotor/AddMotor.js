@@ -168,7 +168,7 @@ function AddAcMotor() {
 		console.log(getQuery());
 		axios({
 			method: "post",
-			url: "http://127.0.0.1:8000/acmotors/add/",
+			url: "https://dstarforms.herokuapp.com/acmotors/add/",
 			data: getQuery(),
 		})
 			.then((res) => {
@@ -194,7 +194,7 @@ function AddAcMotor() {
 		};
 		axios({
 			method: "post",
-			url: "http://127.0.0.1:8000/acmotors/add/",
+			url: "https://dstarforms.herokuapp.com/acmotors/add/",
 			data: data,
 		})
 			.then((res) => {
