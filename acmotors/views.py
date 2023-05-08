@@ -33,7 +33,7 @@ def filterMotors(data):
                                 )
     return motors
 
-@api_view(["POST", "PUT"])
+@api_view(["POST"])
 def addAcMotors(request):
     if request.method == "POST":
         data = request.data
