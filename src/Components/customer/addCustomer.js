@@ -36,7 +36,7 @@ function AddCustomer() {
 			setEdit(params.edit);
 			setJobId(params.jobId);
 		} else {
-			setEdit(params.edit);
+			setEdit(false);
 		}
 	};
 

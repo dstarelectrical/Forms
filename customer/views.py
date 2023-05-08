@@ -18,10 +18,10 @@ def createCustomer(request):
             print("in edit")
             id_ = data["id"]
             customer = Customer.objects.get(id = id_)
+            data.pop("id")
         else:
             id_ = str(uuid.uuid4())
             customer = Customer(id=id_)
-        data.pop("id")
         for k, v in data.items():
             setattr(customer, k, v)
         customer.save()

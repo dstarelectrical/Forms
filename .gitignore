@@ -558,3 +558,12 @@ build/static/js/787.5bd4efce.chunk.js.map
 build/static/js/main.f24bf7ee.js
 build/static/js/main.f24bf7ee.js.LICENSE.txt
 build/static/js/main.f24bf7ee.js.map
+acmotors/__pycache__/__init__.cpython-311.pyc
+acmotors/__pycache__/admin.cpython-311.pyc
+acmotors/__pycache__/apps.cpython-311.pyc
+acmotors/__pycache__/models.cpython-311.pyc
+acmotors/__pycache__/serializer.cpython-311.pyc
+acmotors/__pycache__/urls.cpython-311.pyc
+acmotors/__pycache__/views.cpython-311.pyc
+customer/__pycache__/views.cpython-311.pyc
+db.sqlite3

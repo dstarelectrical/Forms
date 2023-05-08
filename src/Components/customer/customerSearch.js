@@ -38,7 +38,11 @@ function CustomerSearch({ pullCustomer }) {
 	};
 
 	const handleAddClick = () => {
-		navigate("/addcustomer");
+		navigate("/addcustomer", {
+			state: {
+				edit: false,
+			},
+		});
 	};
 
 	const header = (customer) => {
