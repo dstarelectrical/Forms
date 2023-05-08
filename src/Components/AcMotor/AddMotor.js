@@ -170,15 +170,20 @@ function AddAcMotor() {
 			method: "post",
 			url: "http://127.0.0.1:8000/acmotors/add/",
 			data: getQuery(),
-		}).then((res) => {
-			console.log(res);
-			if (res.status === 200) {
-				// window.location.reload(true);
-				notifySuccessPost("motor created successfully");
-			} else if (res.status !== 200) {
-				notifyFailedPost("error creating a motor");
-			}
-		});
+		})
+			.then((res) => {
+				console.log(res);
+				if (res.status === 200) {
+					// window.location.reload(true);
+					notifySuccessPost("motor created successfully");
+				} else if (res.status !== 200) {
+					notifyFailedPost("error creating a motor");
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				notifyFailedPost(err.response.data);
+			});
 	};
 
 	const handleEditClick = () => {
@@ -191,14 +196,19 @@ function AddAcMotor() {
 			method: "post",
 			url: "http://127.0.0.1:8000/acmotors/add/",
 			data: data,
-		}).then((res) => {
-			if (res.status === 200) {
-				navigate(`/job/${jobId}`);
-				notifySuccessPost("motor edited successfully");
-			} else if (res.status !== 200) {
-				notifyFailedPost("error editing the motor");
-			}
-		});
+		})
+			.then((res) => {
+				if (res.status === 200) {
+					navigate(`/job/${jobId}`);
+					notifySuccessPost("motor edited successfully");
+				} else if (res.status !== 200) {
+					notifyFailedPost("error editing the motor");
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				notifyFailedPost(err.response.data);
+			});
 	};
 
 	return (
