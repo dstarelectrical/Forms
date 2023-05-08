@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'backend.middle.DisableCSRFMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -81,7 +82,6 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 WSGI_APPLICATION = 'backend.wsgi.application'
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', "http://localhost:8000"]
 CORS_ORIGIN_WHITELIST = ['http://localhost:3000', 'http://localhost:8000']
 ALLOWED_HOSTS=['*']
 CORS_ORIGIN_ALLOW_ALL = True
