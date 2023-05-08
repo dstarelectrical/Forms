@@ -16,14 +16,14 @@ function DisplayJobDetails({ jobDet }) {
 		console.log("job", jobDet);
 		axios({
 			method: "get",
-			url: `http://127.0.0.1:8000/customer/get/${jobDet["customer"]}/`,
+			url: `https://dstarforms.herokuapp.com//customer/get/${jobDet["customer"]}/`,
 		}).then((res) => {
 			console.log(res);
 			setCustomer(res.data[0]);
 		});
 		axios({
 			method: "get",
-			url: `http://127.0.0.1:8000/acmotors/motor/${jobDet["motor"]}/`,
+			url: `https://dstarforms.herokuapp.com//acmotors/motor/${jobDet["motor"]}/`,
 		}).then((res) => {
 			console.log(res);
 			setMotor(res.data[0]);

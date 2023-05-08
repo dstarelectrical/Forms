@@ -29,7 +29,7 @@ function CustomerSearch({ pullCustomer }) {
 		console.log(search);
 		axios({
 			method: "get",
-			url: "http://127.0.0.1:8000/customer/search/",
+			url: "https://dstarforms.herokuapp.com//customer/search/",
 			params: { search: search },
 		}).then((res) => {
 			setCustomers(res.data);

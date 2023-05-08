@@ -22,7 +22,7 @@ function ViewJob() {
 	useLayoutEffect(() => {
 		axios({
 			method: "get",
-			url: `http://127.0.0.1:8000/acmotors/job/${id}/`,
+			url: `https://dstarforms.herokuapp.com//acmotors/job/${id}/`,
 		}).then((res) => {
 			setJob(res.data);
 			if (res.data.step === "scope1") {

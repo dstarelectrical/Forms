@@ -26,7 +26,7 @@ function DismantleInspection({ jobID, view }) {
 		if (view === true) {
 			axios({
 				method: "get",
-				url: `http://127.0.0.1:8000/acmotors/acdismantle/${jobID}/`,
+				url: `https://dstarforms.herokuapp.com//acmotors/acdismantle/${jobID}/`,
 			}).then((res) => {
 				console.log(res.data);
 				setDismantle(res.data.dismantle);
@@ -65,7 +65,7 @@ function DismantleInspection({ jobID, view }) {
 		};
 		axios({
 			method: "post",
-			url: `http://127.0.0.1:8000/acmotors/acdismantle/${jobID}/`,
+			url: `https://dstarforms.herokuapp.com//acmotors/acdismantle/${jobID}/`,
 			data: data,
 		}).then((res) => {
 			console.log(res);

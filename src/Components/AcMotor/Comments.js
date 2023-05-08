@@ -10,7 +10,7 @@ function Comments({ jobID, view }) {
 		if (view === true) {
 			axios({
 				method: "get",
-				url: `http://127.0.0.1:8000/acmotors/accomments/${jobID}/`,
+				url: `https://dstarforms.herokuapp.com//acmotors/accomments/${jobID}/`,
 			}).then((res) => {
 				setComments(res.data.comments);
 			});
@@ -23,7 +23,7 @@ function Comments({ jobID, view }) {
 		};
 		axios({
 			method: "post",
-			url: `http://127.0.0.1:8000/acmotors/accomments/${jobID}/`,
+			url: `https://dstarforms.herokuapp.com//acmotors/accomments/${jobID}/`,
 			data: data,
 		}).then((res) => {
 			console.log(res);
