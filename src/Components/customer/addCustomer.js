@@ -68,7 +68,7 @@ function AddCustomer() {
 	const handleSaveClick = () => {
 		axios({
 			method: "post",
-			url: "https:1dstarforms.herokuapp.com1customer/add/",
+			url: "http://127.0.0.1:8000/customer/add/",
 			data: query,
 		})
 			.then((res) => {
@@ -89,7 +89,7 @@ function AddCustomer() {
 		};
 		axios({
 			method: "post",
-			url: "https:1dstarforms.herokuapp.com1customer/add/",
+			url: "http://127.0.0.1:8000/customer/add/",
 			data: data,
 		})
 			.then((res) => {

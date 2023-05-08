@@ -19,17 +19,17 @@ function CustomerSearch({ pullCustomer }) {
 	const [bool, setBool] = useState(false);
 	let navigate = useNavigate();
 
-	1 useEffect(() => {
-	1 	if (customer !== "") {
-	1 		handleSelectClick(customer);
-	1 	}
-	1 }, []);
+	// useEffect(() => {
+	// 	if (customer !== "") {
+	// 		handleSelectClick(customer);
+	// 	}
+	// }, []);
 
 	const handleSearchClick = () => {
 		console.log(search);
 		axios({
 			method: "get",
-			url: "https:1dstarforms.herokuapp.com1customer/search/",
+			url: "http://127.0.0.1:8000/customer/search/",
 			params: { search: search },
 		}).then((res) => {
 			setCustomers(res.data);

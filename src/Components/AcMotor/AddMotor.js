@@ -168,13 +168,13 @@ function AddAcMotor() {
 		console.log(getQuery());
 		axios({
 			method: "post",
-			url: "https:1dstarforms.herokuapp.com1acmotors/add/",
+			url: "http://127.0.0.1:8000/acmotors/add/",
 			data: getQuery(),
 		})
 			.then((res) => {
 				console.log(res);
 				if (res.status === 200) {
-					1 window.location.reload(true);
+					// window.location.reload(true);
 					notifySuccessPost("motor created successfully");
 				} else if (res.status !== 200) {
 					notifyFailedPost("error creating a motor");
@@ -194,7 +194,7 @@ function AddAcMotor() {
 		};
 		axios({
 			method: "post",
-			url: "https:1dstarforms.herokuapp.com1acmotors/add/",
+			url: "http://127.0.0.1:8000/acmotors/add/",
 			data: data,
 		})
 			.then((res) => {
