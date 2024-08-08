@@ -4,13 +4,16 @@ import {
 	Panel,
 	InputGroup,
 	IconButton,
-	InputPicker,
+	Whisper,
+	Tooltip,
 	Button,
 	Stack,
 } from "rsuite";
 import axios from "axios";
 import SearchIcon from "@rsuite/icons/Search";
 import { useNavigate } from "react-router-dom";
+import { baseurl } from "../../baseurl";
+import InfoRoundIcon from "@rsuite/icons/InfoRound";
 
 function CustomerSearch({ pullCustomer }) {
 	const [customers, setCustomers] = useState([]);
@@ -29,7 +32,7 @@ function CustomerSearch({ pullCustomer }) {
 		console.log(search);
 		axios({
 			method: "get",
-			url: "https://dstarforms.herokuapp.com/customer/search/",
+			url: baseurl + "customer/search/",
 			params: { search: search },
 		}).then((res) => {
 			setCustomers(res.data);
@@ -50,7 +53,7 @@ function CustomerSearch({ pullCustomer }) {
 			<div style={{ padding: "5px" }}>
 				<h5
 					style={{
-						marginLeft: "10px",
+						marginLeft: "5px",
 						float: "left",
 					}}
 				>
@@ -69,7 +72,23 @@ function CustomerSearch({ pullCustomer }) {
 
 	return (
 		<div>
-			<h4>Customer</h4>
+			<h4>
+				Customer
+				<Whisper
+					followCursor
+					speaker={
+						<Tooltip>
+							This is the customer associated with the job
+						</Tooltip>
+					}
+				>
+					<IconButton
+						appearance="subtle"
+						startIcon={<InfoRoundIcon />}
+						size="sm"
+					/>
+				</Whisper>
+			</h4>
 			{!bool ? (
 				<div>
 					<Stack spacing={6} style={{ widht: "100%" }}>
@@ -89,9 +108,7 @@ function CustomerSearch({ pullCustomer }) {
 							</InputGroup>
 						</Stack.Item>
 
-						<Button onClick={handleAddClick}>
-							Add a new Customer
-						</Button>
+						<Button onClick={handleAddClick}>Add Customer</Button>
 					</Stack>
 					{customers.map((customer) => (
 						<Panel
@@ -107,8 +124,8 @@ function CustomerSearch({ pullCustomer }) {
 							<Button
 								style={{
 									float: "right",
-									marginRight: "10px",
-									marginBottom: "10px",
+									marginRight: "5px",
+									marginBottom: "5px",
 								}}
 								appearance="primary"
 								onClick={(e) => handleSelectClick(customer)}

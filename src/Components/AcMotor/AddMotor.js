@@ -15,6 +15,7 @@ import axios from "axios";
 import SearchIcon from "@rsuite/icons/Search";
 import AcMotorSearch from "./AcMotorSearch";
 import { useLocation, useNavigate } from "react-router-dom";
+import { baseurl } from "../../baseurl";
 
 function AddAcMotor() {
 	const [manufacturer, setManufacturer] = useState("");
@@ -168,7 +169,7 @@ function AddAcMotor() {
 		console.log(getQuery());
 		axios({
 			method: "post",
-			url: "https://dstarforms.herokuapp.com/acmotors/add/",
+			url: baseurl + "acmotors/add/",
 			data: getQuery(),
 		})
 			.then((res) => {
@@ -194,7 +195,7 @@ function AddAcMotor() {
 		};
 		axios({
 			method: "post",
-			url: "https://dstarforms.herokuapp.com/acmotors/add/",
+			url: baseurl + "acmotors/add/",
 			data: data,
 		})
 			.then((res) => {
@@ -214,7 +215,7 @@ function AddAcMotor() {
 	return (
 		<Panel bordered style={{ margin: "10px" }} header="Add AC Motor">
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>
+				<div style={{ width: "160px", textAlign: "right" }}>
 					Manufacturer:
 				</div>
 				<Input
@@ -226,7 +227,7 @@ function AddAcMotor() {
 				/>
 			</Stack>
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>
+				<div style={{ width: "160px", textAlign: "right" }}>
 					Serial#:
 				</div>
 				<Input
@@ -238,7 +239,7 @@ function AddAcMotor() {
 				/>
 			</Stack>
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>Model:</div>
+				<div style={{ width: "160px", textAlign: "right" }}>Model:</div>
 
 				<Input
 					value={model}
@@ -250,7 +251,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>RPM:</div>
+				<div style={{ width: "160px", textAlign: "right" }}>RPM:</div>
 
 				<Input
 					value={rpm}
@@ -262,7 +263,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>Frame:</div>
+				<div style={{ width: "160px", textAlign: "right" }}>Frame:</div>
 
 				<Input
 					value={frame}
@@ -274,7 +275,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>HP/kW:</div>
+				<div style={{ width: "160px", textAlign: "right" }}>HP/kW:</div>
 
 				<InputPicker
 					value={hpkw}
@@ -284,7 +285,7 @@ function AddAcMotor() {
 					}}
 					style={{ width: "200px" }}
 				/>
-				<div style={{ width: "125px", textAlign: "right" }}>
+				<div style={{ width: "160px", textAlign: "right" }}>
 					HP/kW Value
 				</div>
 				<Input
@@ -297,7 +298,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>Volts:</div>
+				<div style={{ width: "160px", textAlign: "right" }}>Volts:</div>
 
 				<Input
 					value={volts}
@@ -309,7 +310,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>Amps:</div>
+				<div style={{ width: "160px", textAlign: "right" }}>Amps:</div>
 
 				<Input
 					value={amps}
@@ -321,7 +322,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>Phase:</div>
+				<div style={{ width: "160px", textAlign: "right" }}>Phase:</div>
 
 				<Input
 					value={phase}
@@ -333,7 +334,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>Class:</div>
+				<div style={{ width: "160px", textAlign: "right" }}>Class:</div>
 
 				<Input
 					value={_class}
@@ -345,7 +346,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>
+				<div style={{ width: "160px", textAlign: "right" }}>
 					Amb.Temp:
 				</div>
 
@@ -359,7 +360,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>
+				<div style={{ width: "160px", textAlign: "right" }}>
 					Time Rating:
 				</div>
 
@@ -373,7 +374,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>
+				<div style={{ width: "160px", textAlign: "right" }}>
 					Cycles:
 				</div>
 
@@ -387,7 +388,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>DIV:</div>
+				<div style={{ width: "160px", textAlign: "right" }}>DIV:</div>
 
 				<Input
 					value={div}
@@ -399,7 +400,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>
+				<div style={{ width: "160px", textAlign: "right" }}>
 					Enclosure:
 				</div>
 
@@ -411,7 +412,7 @@ function AddAcMotor() {
 					}}
 					style={{ width: "200px" }}
 				/>
-				<div style={{ width: "125px", textAlign: "right" }}>Other:</div>
+				<div style={{ width: "160px", textAlign: "right" }}>Other:</div>
 				<Input
 					disabled={enclosure !== "Other"}
 					value={enclosureOther}
@@ -423,7 +424,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>
+				<div style={{ width: "160px", textAlign: "right" }}>
 					Eyebolt:
 				</div>
 
@@ -435,7 +436,7 @@ function AddAcMotor() {
 					}}
 					style={{ width: "200px" }}
 				/>
-				{/* <div style={{ width: "125px", textAlign: "right" }}>
+				{/* <div style={{ width: "160px", textAlign: "right" }}>
 					Eyebolt Damaged:
 				</div>
 				<InputPicker
@@ -449,7 +450,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>
+				<div style={{ width: "160px", textAlign: "right" }}>
 					Fitted With:
 				</div>
 				<InputPicker
@@ -460,7 +461,7 @@ function AddAcMotor() {
 					}}
 					style={{ width: "200px" }}
 				/>
-				<div style={{ width: "125px", textAlign: "right" }}>Other:</div>
+				<div style={{ width: "160px", textAlign: "right" }}>Other:</div>
 				<Input
 					disabled={fittedWith !== "Other"}
 					value={fittedWithOther}
@@ -472,7 +473,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>
+				<div style={{ width: "160px", textAlign: "right" }}>
 					Fitted With:
 				</div>
 				<InputPicker
@@ -486,7 +487,7 @@ function AddAcMotor() {
 			</Stack>
 
 			<Stack spacing={10} style={{ marginBottom: "5px" }}>
-				<div style={{ width: "125px", textAlign: "right" }}>
+				<div style={{ width: "160px", textAlign: "right" }}>
 					Measurement:
 				</div>
 				<Input

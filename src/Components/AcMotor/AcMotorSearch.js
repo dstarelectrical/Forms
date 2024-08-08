@@ -2,15 +2,19 @@ import React, { useState, useEffect } from "react";
 import {
 	Input,
 	Panel,
-	InputGroup,
+	Whisper,
+	Tooltip,
 	IconButton,
 	InputPicker,
 	Button,
 	Stack,
+	FlexboxGrid,
 } from "rsuite";
 import axios from "axios";
 import SearchIcon from "@rsuite/icons/Search";
 import { useNavigate } from "react-router-dom";
+import { baseurl } from "../../baseurl";
+import InfoRoundIcon from "@rsuite/icons/InfoRound";
 
 function AcMotorSearch({ pullMotor }) {
 	const [motors, setMotors] = useState([]);
@@ -34,7 +38,7 @@ function AcMotorSearch({ pullMotor }) {
 	const handleSearchClick = () => {
 		axios({
 			method: "get",
-			url: "https://dstarforms.herokuapp.com/acmotors/search/",
+			url: baseurl + "acmotors/search/",
 			params: {
 				volts: volts,
 				frame: frame,
@@ -88,10 +92,15 @@ function AcMotorSearch({ pullMotor }) {
 		pullMotor(motor);
 	};
 
-	const keyRight = { fontWeight: "bold", fontSize: "17px" };
+	const keyRight = {
+		fontWeight: "bold",
+		fontSize: "17px",
+		fontFamily: "Inter, sans-serif",
+	};
 	const valueRight = {
 		fontSize: "17px",
 		marginLeft: "5px",
+		fontFamily: "Inter, sans-serif",
 	};
 
 	const getFormattedMotor = (motor) => {
@@ -191,12 +200,52 @@ function AcMotorSearch({ pullMotor }) {
 
 	return (
 		<div style={{ marginTop: "5px" }}>
-			<h4 style={{ marginBottom: "5px" }}>Motor</h4>
+			<h4 style={{ marginBottom: "5px" }}>
+				Motor
+				<Whisper
+					followCursor
+					speaker={
+						<Tooltip>
+							This is the customer associated with the job
+						</Tooltip>
+					}
+				>
+					<IconButton
+						appearance="subtle"
+						startIcon={<InfoRoundIcon />}
+						size="sm"
+					/>
+				</Whisper>
+			</h4>
 			{!bool ? (
 				<div>
 					<div>
 						<Stack spacing={10} style={{ marginBottom: "5px" }}>
-							<div style={{ width: "125px", textAlign: "right" }}>
+							<div
+								style={{
+									width: "160px",
+									textAlign: "right",
+								}}
+							>
+								Frame:
+							</div>
+
+							<Input
+								placeholder="frame"
+								value={frame}
+								onChange={(e) => {
+									setFrame(e);
+								}}
+								style={{ width: "200px" }}
+							/>
+						</Stack>
+						<Stack spacing={10} style={{ marginBottom: "5px" }}>
+							<div
+								style={{
+									width: "160px",
+									textAlign: "right",
+								}}
+							>
 								Volts:
 							</div>
 
@@ -211,22 +260,12 @@ function AcMotorSearch({ pullMotor }) {
 						</Stack>
 
 						<Stack spacing={10} style={{ marginBottom: "5px" }}>
-							<div style={{ width: "125px", textAlign: "right" }}>
-								Frame:
-							</div>
-
-							<Input
-								placeholder="frame"
-								value={frame}
-								onChange={(e) => {
-									setFrame(e);
+							<div
+								style={{
+									width: "160px",
+									textAlign: "right",
 								}}
-								style={{ width: "200px" }}
-							/>
-						</Stack>
-
-						<Stack spacing={10} style={{ marginBottom: "5px" }}>
-							<div style={{ width: "125px", textAlign: "right" }}>
+							>
 								RPM:
 							</div>
 
@@ -239,9 +278,13 @@ function AcMotorSearch({ pullMotor }) {
 								style={{ width: "200px" }}
 							/>
 						</Stack>
-
 						<Stack spacing={10} style={{ marginBottom: "5px" }}>
-							<div style={{ width: "125px", textAlign: "right" }}>
+							<div
+								style={{
+									width: "160px",
+									textAlign: "right",
+								}}
+							>
 								Enclosure:
 							</div>
 
@@ -256,32 +299,56 @@ function AcMotorSearch({ pullMotor }) {
 							/>
 						</Stack>
 
-						<Stack spacing={10} style={{ marginBottom: "5px" }}>
-							<div style={{ width: "125px", textAlign: "right" }}>
-								Hp/KW:
-							</div>
+						<FlexboxGrid>
+							<FlexboxGrid.Item colspan={8}>
+								<Stack
+									spacing={10}
+									style={{ marginBottom: "5px" }}
+								>
+									<div
+										style={{
+											width: "160px",
+											textAlign: "right",
+										}}
+									>
+										Hp/KW:
+									</div>
 
-							<InputPicker
-								data={HPKWData}
-								value={hpKw}
-								onChange={(e) => {
-									setHpKw(e);
-								}}
-								placeholder="Hp/KW"
-								style={{ width: "200px" }}
-							/>
-							<div style={{ width: "125px", textAlign: "right" }}>
-								Hp/KW value:
-							</div>
-							<Input
-								placeholder="value"
-								value={hpkwValue}
-								onChange={(e) => {
-									sethpkwValue(e);
-								}}
-								style={{ width: "200px" }}
-							/>
-						</Stack>
+									<InputPicker
+										data={HPKWData}
+										value={hpKw}
+										onChange={(e) => {
+											setHpKw(e);
+										}}
+										placeholder="Hp/KW"
+										style={{ width: "200px" }}
+									/>
+								</Stack>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={8}>
+								<Stack
+									spacing={10}
+									style={{ marginBottom: "5px" }}
+								>
+									<div
+										style={{
+											width: "160px",
+											textAlign: "right",
+										}}
+									>
+										Hp/KW value:
+									</div>
+									<Input
+										placeholder="value"
+										value={hpkwValue}
+										onChange={(e) => {
+											sethpkwValue(e);
+										}}
+										style={{ width: "200px" }}
+									/>
+								</Stack>
+							</FlexboxGrid.Item>
+						</FlexboxGrid>
 
 						<Stack spacing={10}>
 							<Stack.Item grow={1}>
@@ -321,8 +388,8 @@ function AcMotorSearch({ pullMotor }) {
 								<Button
 									style={{
 										float: "right",
-										marginRight: "10px",
-										marginBottom: "10px",
+										marginRight: "5px",
+										marginBottom: "5px",
 									}}
 									appearance="primary"
 									onClick={(e) => handleSelectedClick(motor)}
@@ -339,7 +406,7 @@ function AcMotorSearch({ pullMotor }) {
 					bordered
 					collapsible
 					header={"Selected Motor: " + selected["manufacturer"]}
-					style={{ marginTop: "10px" }}
+					style={{ marginTop: "5px" }}
 				>
 					{getFormattedMotor(selected)}
 				</Panel>

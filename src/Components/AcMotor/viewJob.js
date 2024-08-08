@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from "react";
-import { Input, Button } from "rsuite";
+import { Input, Button, Panel } from "rsuite";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import DisplayJobDetails from "./displayCreatedJob";
@@ -8,6 +8,8 @@ import DismantleInspection from "./DismantleAndInspection";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import Comments from "./Comments";
+import { baseurl } from "../../baseurl";
+import SideNav from "../sidenav";
 
 function ViewJob() {
 	const { id } = useParams();
@@ -22,7 +24,7 @@ function ViewJob() {
 	useLayoutEffect(() => {
 		axios({
 			method: "get",
-			url: `https://dstarforms.herokuapp.com/acmotors/job/${id}/`,
+			url: baseurl + `acmotors/job/${id}/`,
 		}).then((res) => {
 			setJob(res.data);
 			if (res.data.step === "scope1") {
@@ -79,32 +81,53 @@ function ViewJob() {
 	};
 
 	return (
-		<div style={{ width: "720px" }}>
-			<div id="print" style={{ display: "inline-block" }}>
+		<div
+			style={{
+				display: "flex",
+			}}
+		>
+			<SideNav />
+			<Panel
+				id="print"
+				style={{
+					display: "flex",
+					float: "left",
+					width: "84%",
+					padding: "5px",
+					fontSize: "12px",
+					fontFamily: "Inter, sans-serif",
+					width: "calc(100% - 210px)",
+					marginLeft: "210px",
+				}}
+			>
 				<h4 style={{ textAlign: "center" }}>
 					AC Motor Report(Inspection)
 				</h4>
 				{viewJobDet ? <DisplayJobDetails jobDet={job} /> : <div></div>}
-				{viewCondition ? (
-					<Condition jobID={id} view={true} />
-				) : (
-					<div></div>
-				)}
-				{viewDismantle ? (
-					<DismantleInspection jobID={id} view={true} />
-				) : (
-					<div></div>
-				)}
+
+				<div>
+					{viewCondition ? (
+						<Condition jobID={id} view={true} />
+					) : (
+						<div></div>
+					)}
+					{viewDismantle ? (
+						<DismantleInspection jobID={id} view={true} />
+					) : (
+						<div></div>
+					)}
+				</div>
+
 				{viewComments ? (
 					<Comments jobID={id} view={true} />
 				) : (
 					<div></div>
 				)}
 				{getCurrStep()}
-			</div>
-			<Button block onClick={printDocument} appearance="primary">
-				Download PDF
-			</Button>
+				<Button block onClick={printDocument} appearance="primary">
+					Download PDF
+				</Button>
+			</Panel>
 		</div>
 	);
 }

@@ -6,6 +6,7 @@ from django.http import JsonResponse,HttpResponse
 from rest_framework import status
 from . import models
 from .serializer import *
+from django.db.models import Q
 
 def filterMotors(data):
     motors = ACMotors.objects.filter(manufacturer=data["manufacturer"],
@@ -112,7 +113,21 @@ def searchAcMotors(request):
     if request.method == "GET":
         obj = dict(request.GET)
         print(obj)
-        data = ACMotors.objects.filter(volts=obj["volts"][0],frame=obj["frame"][0],hpkw=obj["hpkw"][0],enclosure=obj["enclosure"][0],rpm=obj["rpm"][0], hpkwValue=obj["hpkwValue"][0])
+        search = {}
+        if obj["volts"][0] != '':
+            search["volts"] = obj["volts"][0]
+        if obj["frame"][0] != '':
+            search["frame"] = obj["frame"][0]
+        if obj["hpkw"][0] != '':
+            search["hpkw"] = obj["hpkw"][0]
+        if obj["enclosure"][0] != '':
+            search["enclosure"] = obj["enclosure"][0]
+        if obj["rpm"][0] != '': 
+            search["rpm"] = obj["rpm"][0]   
+        if obj["hpkwValue"][0] != '':
+            search["hpkwValue"] = obj["hpkwValue"][0]
+        print(search)
+        data = ACMotors.objects.filter(**search)
         serializer = AcMotorSerializer(data, many=True)
         return JsonResponse(serializer.data, safe=False)
 
@@ -128,8 +143,15 @@ def addNewJob(request):
             newJob = ACMotorJobDetails.objects.get(id = id_)
         else:
             id_ = str(uuid.uuid4())
-            motor = ACMotors.objects.filter(id=data["motor"]).first()
-            customerObj = Customer.objects.filter(id=data["customer"]).first()
+            try: 
+                customerObj = Customer.objects.filter(id=data["customer"]).first()
+            except:
+                return HttpResponse("Customer not found", status=status.HTTP_404_NOT_FOUND)
+            try :
+                motor = ACMotors.objects.filter(id=data["motor"]).first()
+            except :
+                return HttpResponse("Motor not found", status=status.HTTP_404_NOT_FOUND)
+            
             newJob = ACMotorJobDetails.objects.create(motor=motor, customer=customerObj) 
         data.pop('motor')
         data.pop('customer')
@@ -216,3 +238,26 @@ def comments(request, pk):
         serializer = CommentsSerializer(data, many=False)
         return JsonResponse(serializer.data, safe=False)
     
+
+@api_view(["GET"])
+def getActiveJobs(request):
+    if request.method == "GET":
+        data = ACMotorJobDetails.objects.filter(~Q(step="print"))
+        serializer = AcMotorJobSerializer(data, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    
+@api_view(["GET"])
+def getAllJobs(request):
+    if request.method == "GET":
+        data = ACMotorJobDetails.objects.all()
+        serializer = AcMotorJobSerializer(data, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    
+@api_view(["GET"])
+def getStepCounts(request):
+    if request.method == "GET":
+        scope1 = ACMotorJobDetails.objects.filter(step="scope1").count()
+        scope2 = ACMotorJobDetails.objects.filter(step="scope2").count()
+        comments = ACMotorJobDetails.objects.filter(step="comments").count()
+        data = {"scope1": scope1, "scope2": scope2, "comments": comments}
+        return JsonResponse(data, safe=False)

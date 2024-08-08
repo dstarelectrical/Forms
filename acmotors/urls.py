@@ -12,5 +12,8 @@ urlpatterns = [
   path('motor/<str:pk>/', views.getMotorById, name="get motorby id"),
   path('accondition/<str:pk>/', views.addConditionAssesment, name='Condition Assessment'),
   path('acdismantle/<str:pk>/', views.addDismantleInspection, name='Dismantle Inspection'),
-  path('accomments/<str:pk>/', views.comments, name='Comments')
+  path('accomments/<str:pk>/', views.comments, name='Comments'),
+  path('getactivejobs/', views.getActiveJobs, name='active jobs'),
+  path('getalljobs/', views.getAllJobs, name='all jobs'),
+  path('getstepcounts/', views.getStepCounts, name='step counts'),
 ]

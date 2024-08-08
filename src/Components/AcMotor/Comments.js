@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Input, Button, Checkbox, Panel } from "rsuite";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { baseurl } from "../../baseurl";
 
 function Comments({ jobID, view }) {
 	const [comments, setComments] = useState("");
@@ -10,7 +11,7 @@ function Comments({ jobID, view }) {
 		if (view === true) {
 			axios({
 				method: "get",
-				url: `https://dstarforms.herokuapp.com/acmotors/accomments/${jobID}/`,
+				url: baseurl + `acmotors/accomments/${jobID}/`,
 			}).then((res) => {
 				setComments(res.data.comments);
 			});
@@ -23,7 +24,7 @@ function Comments({ jobID, view }) {
 		};
 		axios({
 			method: "post",
-			url: `https://dstarforms.herokuapp.com/acmotors/accomments/${jobID}/`,
+			url: baseurl + `acmotors/accomments/${jobID}/`,
 			data: data,
 		}).then((res) => {
 			console.log(res);
@@ -48,7 +49,7 @@ function Comments({ jobID, view }) {
 						onChange={(e) => setComments(e)}
 					/>
 					<Button block onClick={handleSaveClick}>
-						Save
+						Finish Job
 					</Button>
 				</div>
 			) : (

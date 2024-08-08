@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import SearchIcon from "@rsuite/icons/Search";
 import { useLocation, useNavigate } from "react-router-dom";
+import { baseurl } from "../../baseurl";
 
 function AddCustomer() {
 	const [customer, setCustomer] = useState("");
@@ -68,7 +69,7 @@ function AddCustomer() {
 	const handleSaveClick = () => {
 		axios({
 			method: "post",
-			url: "https://dstarforms.herokuapp.com/customer/add/",
+			url: baseurl + "customer/add/",
 			data: query,
 		})
 			.then((res) => {
@@ -89,7 +90,7 @@ function AddCustomer() {
 		};
 		axios({
 			method: "post",
-			url: "https://dstarforms.herokuapp.com/customer/add/",
+			url: baseurl + "customer/add/",
 			data: data,
 		})
 			.then((res) => {

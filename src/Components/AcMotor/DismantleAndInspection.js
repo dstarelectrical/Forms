@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Input, Button, Panel, Checkbox, Stack } from "rsuite";
+import {
+	Input,
+	Button,
+	Panel,
+	Checkbox,
+	Stack,
+	toaster,
+	Message,
+} from "rsuite";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { baseurl } from "../../baseurl";
 
 function DismantleInspection({ jobID, view }) {
 	const [dismantle, setDismantle] = useState(false);
@@ -26,9 +35,9 @@ function DismantleInspection({ jobID, view }) {
 		if (view === true) {
 			axios({
 				method: "get",
-				url: `https://dstarforms.herokuapp.com/acmotors/acdismantle/${jobID}/`,
+				url: baseurl + `acmotors/acdismantle/${jobID}/`,
 			}).then((res) => {
-				console.log(res.data);
+				console.log("dismantle", res.data);
 				setDismantle(res.data.dismantle);
 				setElectrical(res.data.electrical);
 				setMechanical(res.data.mechanical);
@@ -45,6 +54,13 @@ function DismantleInspection({ jobID, view }) {
 			});
 		}
 	}, []);
+
+	const notifyFailedPost = (error) => {
+		toaster.push(<Message type="error">{error}</Message>, {
+			placement: "topEnd",
+			duration: 5000,
+		});
+	};
 
 	const handleSaveClick = () => {
 		let data = {
@@ -65,27 +81,28 @@ function DismantleInspection({ jobID, view }) {
 		};
 		axios({
 			method: "post",
-			url: `https://dstarforms.herokuapp.com/acmotors/acdismantle/${jobID}/`,
+			url: baseurl + `acmotors/acdismantle/${jobID}/`,
 			data: data,
-		}).then((res) => {
-			console.log(res);
-			window.location.reload(true);
-		});
+		})
+			.then((res) => {
+				console.log(res);
+				window.location.reload(true);
+			})
+			.catch((error) => {
+				console.log(error.response.data);
+				notifyFailedPost(error.response.data);
+			});
 	};
 
 	return (
-		<div
-			bordered
+		<Panel
 			style={{
 				float: "left",
-				width: "355px",
-				marginLeft: "3px",
+				width: "50%",
 				marginTop: "3px",
-				height: "525px",
-				borderTopWidth: "1px",
-				borderTopStyle: "solid",
-				borderTopColor: "grey",
-				padding: "5px",
+
+				fontSize: "12px",
+				fontFamily: "Inter, sans-serif",
 			}}
 		>
 			{/* border: "1px solid grey", borderRadius: "5px", padding: "5px", */}
@@ -213,41 +230,41 @@ function DismantleInspection({ jobID, view }) {
 						Any other information in the failure
 					</Checkbox>
 				</div>
-				{!view ? (
-					<Stack spacing={6} style={{ marginBottom: "5px" }}>
-						Comments:
-						<Input
-							as="textarea"
-							rows={1}
-							placeholder="Comments"
-							value={comments}
-							onChange={(e) => setComments(e)}
-							style={{ width: "200px" }}
-						/>
-					</Stack>
-				) : (
-					<div
-						style={{
-							fontSize: "17px",
-							marginLeft: "5px",
-						}}
-					>
-						Comments: {comments}
-					</div>
-				)}
+			</div>
+
+			{!view ? (
 				<Stack spacing={6} style={{ marginBottom: "5px" }}>
-					Signature:
+					Comments:
 					<Input
-						readOnly={view}
-						placeholder="signature"
-						value={signature}
-						onChange={(e) => {
-							setSignature(e);
-						}}
+						as="textarea"
+						rows={1}
+						placeholder="Comments"
+						value={comments}
+						onChange={(e) => setComments(e)}
 						style={{ width: "200px" }}
 					/>
 				</Stack>
-			</div>
+			) : (
+				<div
+					style={{
+						fontSize: "17px",
+					}}
+				>
+					Comments: {comments}
+				</div>
+			)}
+			<Stack spacing={6} style={{ marginBottom: "5px" }}>
+				Signature:
+				<Input
+					readOnly={view}
+					placeholder="signature"
+					value={signature}
+					onChange={(e) => {
+						setSignature(e);
+					}}
+					style={{ width: "200px", marginTop: "5px" }}
+				/>
+			</Stack>
 			{!view ? (
 				<Button block onClick={handleSaveClick}>
 					Save
@@ -255,7 +272,7 @@ function DismantleInspection({ jobID, view }) {
 			) : (
 				<div></div>
 			)}
-		</div>
+		</Panel>
 	);
 }
 

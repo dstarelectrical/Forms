@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Input, Button, Checkbox, Panel, Stack } from "rsuite";
+import {
+	Input,
+	Button,
+	Checkbox,
+	toaster,
+	Message,
+	Stack,
+	Panel,
+} from "rsuite";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { baseurl } from "../../baseurl";
 
 function Condition({ jobID, view }) {
 	const [visual, setVisual] = useState(false);
@@ -23,7 +32,7 @@ function Condition({ jobID, view }) {
 		if (view === true) {
 			axios({
 				method: "get",
-				url: `https://dstarforms.herokuapp.com/acmotors/accondition/${jobID}/`,
+				url: baseurl + `acmotors/accondition/${jobID}/`,
 			}).then((res) => {
 				setVisual(res.data.visual);
 				setMissing(res.data.missing);
@@ -39,6 +48,13 @@ function Condition({ jobID, view }) {
 			});
 		}
 	}, []);
+
+	const notifyFailedPost = (error) => {
+		toaster.push(<Message type="error">{error}</Message>, {
+			placement: "topEnd",
+			duration: 5000,
+		});
+	};
 
 	const handleSaveClick = () => {
 		let data = {
@@ -57,30 +73,28 @@ function Condition({ jobID, view }) {
 		};
 		axios({
 			method: "post",
-			url: `https://dstarforms.herokuapp.com/acmotors/accondition/${jobID}/`,
+			url: baseurl + `acmotors/accondition/${jobID}/`,
 			data: data,
-		}).then((res) => {
-			console.log(res);
-			window.location.reload(true);
-		});
+		})
+			.then((res) => {
+				console.log(res);
+				window.location.reload(true);
+			})
+			.catch((error) => {
+				console.log(error.response.data);
+				notifyFailedPost(error.response.data);
+			});
 	};
 
 	return (
-		<div
-			bordered
+		<Panel
 			style={{
 				float: "left",
-				width: "355px",
-				marginLeft: "3px",
+				width: "50%",
 				marginTop: "3px",
-				height: "525px",
-				borderTopWidth: "1px",
-				borderTopStyle: "solid",
-				borderTopColor: "grey",
-				borderRightWidth: "1px",
-				borderRightStyle: "solid",
-				borderRightColor: "grey",
-				padding: "5px",
+				height: "100%",
+				fontSize: "12px",
+				fontFamily: "Inter, sans-serif",
 			}}
 		>
 			<h5>Condition Assessment</h5>
@@ -162,55 +176,53 @@ function Condition({ jobID, view }) {
 				</Checkbox>
 				<Checkbox
 					readOnly={view}
-					checked={auxiliary}
-					onChange={(e) => setAuxialiary(!auxiliary)}
-				>
-					Auxiliary RTD/Klixon Resistance
-				</Checkbox>
-				<Checkbox
-					readOnly={view}
 					checked={heater}
 					onChange={(e) => setHeater(!heater)}
 				>
 					Heater Data
 				</Checkbox>
-
-				{!view ? (
-					<Stack spacing={6} style={{ marginBottom: "5px" }}>
-						Comments:
-						<Input
-							as="textarea"
-							rows={1}
-							placeholder="Comments"
-							value={comments}
-							onChange={(e) => setComments(e)}
-							style={{ width: "200px" }}
-						/>
-					</Stack>
-				) : (
-					<div
-						style={{
-							fontSize: "17px",
-							marginLeft: "5px",
-						}}
-					>
-						Comments: {comments}
-					</div>
-				)}
-
+				<Checkbox
+					readOnly={view}
+					checked={auxiliary}
+					onChange={(e) => setAuxialiary(!auxiliary)}
+				>
+					Auxiliary RTD/Klixon Resistance
+				</Checkbox>
+			</div>
+			{!view ? (
 				<Stack spacing={6} style={{ marginBottom: "5px" }}>
-					Signature:
+					Comments:
 					<Input
-						readOnly={view}
-						placeholder="signature"
-						value={signature}
-						onChange={(e) => {
-							setSignature(e);
-						}}
+						as="textarea"
+						rows={1}
+						placeholder="Comments"
+						value={comments}
+						onChange={(e) => setComments(e)}
 						style={{ width: "200px" }}
 					/>
 				</Stack>
-			</div>
+			) : (
+				<div
+					style={{
+						fontSize: "17px",
+					}}
+				>
+					Comments: {comments}
+				</div>
+			)}
+
+			<Stack spacing={6} style={{ marginBottom: "5px" }}>
+				Signature:
+				<Input
+					readOnly={view}
+					placeholder="signature"
+					value={signature}
+					onChange={(e) => {
+						setSignature(e);
+					}}
+					style={{ width: "200px", marginTop: "5px" }}
+				/>
+			</Stack>
 			{!view ? (
 				<Button block onClick={handleSaveClick}>
 					Save
@@ -218,7 +230,7 @@ function Condition({ jobID, view }) {
 			) : (
 				<div></div>
 			)}
-		</div>
+		</Panel>
 	);
 }
 

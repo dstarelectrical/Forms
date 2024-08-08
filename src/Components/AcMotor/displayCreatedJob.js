@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Input, Button, toaster, Message } from "rsuite";
+import { Input, Button, toaster, Message, IconButton } from "rsuite";
 import AcMotorSearch from "./AcMotorSearch";
 import CustomerSearch from "../customer/customerSearch";
 import JobDetails from "./AcMotorJobDetails";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { baseurl } from "../../baseurl";
+import EditIcon from "@rsuite/icons/Edit";
 
 function DisplayJobDetails({ jobDet }) {
 	const [job, setJob] = useState(jobDet);
@@ -16,14 +18,14 @@ function DisplayJobDetails({ jobDet }) {
 		console.log("job", jobDet);
 		axios({
 			method: "get",
-			url: `https://dstarforms.herokuapp.com/customer/get/${jobDet["customer"]}/`,
+			url: baseurl + `customer/get/${jobDet["customer"]}/`,
 		}).then((res) => {
 			console.log(res);
 			setCustomer(res.data[0]);
 		});
 		axios({
 			method: "get",
-			url: `https://dstarforms.herokuapp.com/acmotors/motor/${jobDet["motor"]}/`,
+			url: baseurl + `acmotors/motor/${jobDet["motor"]}/`,
 		}).then((res) => {
 			console.log(res);
 			setMotor(res.data[0]);
@@ -55,10 +57,18 @@ function DisplayJobDetails({ jobDet }) {
 		return str;
 	};
 
-	const keyRight = { fontWeight: "bold", fontSize: "17px" };
+	const keyRight = {
+		fontWeight: "bold",
+		fontSize: "15px",
+		width: "150px",
+		textAlign: "left",
+		fontFamily: "Inter, sans-serif",
+	};
 	const valueRight = {
-		fontSize: "17px",
+		fontSize: "15px",
 		marginLeft: "5px",
+		fontFamily: "Inter, sans-serif",
+		textAlign: "right",
 	};
 
 	const handleEditClick = (motor) => {
@@ -105,9 +115,28 @@ function DisplayJobDetails({ jobDet }) {
 					padding: "5px",
 				}}
 			>
-				<h5>Customer: {customer["customer"]}</h5>
+				<div
+					style={{
+						fontWeight: "bold",
+						fontSize: "15px",
+						fontFamily: "Inter, sans-serif",
+					}}
+				>
+					Customer Details
+					<IconButton
+						size="sm"
+						appearance="subtle"
+						onClick={(e) => handleEditCustomerClick()}
+						style={{
+							float: "right",
+							padding: "3px",
+						}}
+						icon={<EditIcon />}
+					/>
+				</div>
+
 				<div style={{ display: "flex", marginTop: "5px" }}>
-					<div style={{ width: "30%" }}>
+					<div style={{ width: "33%" }}>
 						<div style={{ display: "flex" }}>
 							<div style={keyRight}>Customer:</div>
 							<div style={valueRight}>{customer["customer"]}</div>
@@ -117,7 +146,7 @@ function DisplayJobDetails({ jobDet }) {
 							<div style={valueRight}>{customer["phone"]}</div>
 						</div>
 					</div>
-					<div style={{ width: "50%" }}>
+					<div style={{ width: "33%" }}>
 						<div style={{ display: "flex" }}>
 							<div style={keyRight}>address:</div>
 							<div style={valueRight}>{customer["address"]}</div>
@@ -128,7 +157,7 @@ function DisplayJobDetails({ jobDet }) {
 							<div style={valueRight}>{customer["email"]}</div>
 						</div>
 					</div>
-					<div style={{ width: "20%" }}>
+					<div style={{ width: "33%" }}>
 						<div style={{ display: "flex" }}>
 							<div style={keyRight}>job#:</div>
 							<div style={valueRight}>{jobDet["id"]}</div>
@@ -139,13 +168,6 @@ function DisplayJobDetails({ jobDet }) {
 						</div>
 					</div>
 				</div>
-				<Button
-					block
-					appearance="primary"
-					onClick={(e) => handleEditCustomerClick()}
-				>
-					Edit
-				</Button>
 			</div>
 			<div
 				style={{
@@ -158,7 +180,15 @@ function DisplayJobDetails({ jobDet }) {
 					padding: "5px",
 				}}
 			>
-				<h5>Job Details</h5>
+				<div
+					style={{
+						fontWeight: "bold",
+						fontSize: "15px",
+						fontFamily: "Inter, sans-serif",
+					}}
+				>
+					Job Details
+				</div>
 				<div style={{ display: "flex", marginTop: "5px" }}>
 					<div style={{ width: "50%" }}>
 						<div style={{ display: "flex" }}>
@@ -183,6 +213,10 @@ function DisplayJobDetails({ jobDet }) {
 							<div style={keyRight}>Urgency:</div>
 							<div style={valueRight}>{getUrgency(job)} </div>
 						</div>
+						<div style={{ display: "flex" }}>
+							<div style={keyRight}>Missing Parts:</div>
+							<div style={valueRight}>{job["partsMissing"]}</div>
+						</div>
 					</div>
 
 					<div style={{ width: "50%" }}>
@@ -203,13 +237,10 @@ function DisplayJobDetails({ jobDet }) {
 					</div>
 				</div>
 				<div style={{ display: "flex" }}>
-					<div style={keyRight}>Customer Comments:</div>
+					<div style={keyRight}>Comments:</div>
 					<div style={valueRight}>{job["customerComments"]}</div>
 				</div>
-				<div style={{ display: "flex" }}>
-					<div style={keyRight}>Parts Missing Or Broken:</div>
-					<div style={valueRight}>{job["partsMissing"]}</div>
-				</div>
+
 				{/* <Button
 					block
 					appearance="primary"
@@ -229,7 +260,25 @@ function DisplayJobDetails({ jobDet }) {
 					padding: "5px",
 				}}
 			>
-				<h5>Motor: {motor["manufacturer"]}</h5>
+				<div
+					style={{
+						fontWeight: "bold",
+						fontSize: "15px",
+						fontFamily: "Inter, sans-serif",
+					}}
+				>
+					Motor Details
+					<IconButton
+						size="sm"
+						appearance="subtle"
+						onClick={(e) => handleEditClick(motor)}
+						style={{
+							float: "right",
+							padding: "3px",
+						}}
+						icon={<EditIcon />}
+					/>
+				</div>
 				<div style={{ display: "flex", marginTop: "5px" }}>
 					<div style={{ width: "25%" }}>
 						<div style={{ display: "flex" }}>
@@ -322,13 +371,6 @@ function DisplayJobDetails({ jobDet }) {
 						</div>
 					</div>
 				</div>
-				<Button
-					block
-					appearance="primary"
-					onClick={(e) => handleEditClick(motor)}
-				>
-					Edit
-				</Button>
 			</div>
 		</div>
 	);

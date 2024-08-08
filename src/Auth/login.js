@@ -4,6 +4,7 @@ import EyeIcon from "@rsuite/icons/legacy/Eye";
 import EyeSlashIcon from "@rsuite/icons/legacy/EyeSlash";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { baseurl } from "../baseurl";
 
 function LOGIN() {
 	const [username, set_username] = useState("");
@@ -38,7 +39,7 @@ function LOGIN() {
 
 		axios({
 			method: "post",
-			url: "https://dstarforms.herokuapp.com/login/",
+			url: baseurl + "login/",
 			data: params,
 		})
 			.then(async (res) => {
@@ -65,7 +66,7 @@ function LOGIN() {
 				/>
 				<InputGroup
 					inside
-					style={{ width: "70%", margin: "auto", marginTop: "10px" }}
+					style={{ width: "70%", margin: "auto", marginTop: "5px" }}
 				>
 					<Input
 						onChange={(e) => set_password(e)}

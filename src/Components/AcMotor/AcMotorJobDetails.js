@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Input, Panel, DatePicker, Stack, InputPicker, Button } from "rsuite";
+import {
+	Input,
+	Panel,
+	DatePicker,
+	Stack,
+	InputPicker,
+	Button,
+	FlexboxGrid,
+} from "rsuite";
 import axios from "axios";
+import { baseurl } from "../../baseurl";
 
 function JobDetails({ job, pullDetails }) {
 	const [po, setPO] = useState("");
@@ -75,14 +84,14 @@ function JobDetails({ job, pullDetails }) {
 		"Rush w/limitedOT",
 		"Normal Planning",
 		"Hold Points",
-		"Specific Time",
+		"Specific Date",
 	].map((item) => ({
 		label: item,
 		value: item,
 	}));
 
 	const getSpecificTime = () => {
-		if (urgency !== "Specific Time") {
+		if (urgency !== "Specific Date") {
 			return specificTime;
 		} else {
 			return "";
@@ -105,98 +114,85 @@ function JobDetails({ job, pullDetails }) {
 	};
 
 	return (
-		<div style={{ marginTop: "10px" }}>
+		<div style={{ marginTop: "5px", position: "relative" }}>
 			<h4>Job details</h4>
+			<FlexboxGrid>
+				<FlexboxGrid.Item colspan={8}>
+					<Stack spacing={6} style={{ marginBottom: "5px" }}>
+						<div style={{ width: "160px", textAlign: "right" }}>
+							PO Number:
+						</div>
+						<Input
+							placeholder="PO"
+							value={po}
+							onChange={(e) => {
+								setPO(e);
+								pullDetails(query);
+							}}
+							style={{ width: "200px" }}
+						/>
+					</Stack>
+				</FlexboxGrid.Item>
+				<FlexboxGrid.Item colspan={8}>
+					<Stack spacing={6} style={{ marginBottom: "5px" }}>
+						<div style={{ width: "160px", textAlign: "right" }}>
+							Quote Required:
+						</div>
+
+						<InputPicker
+							data={quoteData}
+							value={quote}
+							onChange={(e) => {
+								setQuote(e);
+								pullDetails(query);
+							}}
+							style={{ width: "200px" }}
+						/>
+					</Stack>
+				</FlexboxGrid.Item>
+			</FlexboxGrid>
+
+			<FlexboxGrid>
+				<FlexboxGrid.Item colspan={8}>
+					<Stack spacing={6} style={{ marginBottom: "5px" }}>
+						<div style={{ width: "160px", textAlign: "right" }}>
+							Equipment:
+						</div>
+						<InputPicker
+							data={equipmentData}
+							value={equipment}
+							onChange={(e) => {
+								setEquipment(e);
+								pullDetails(query);
+							}}
+							style={{ width: "200px" }}
+						/>
+					</Stack>
+				</FlexboxGrid.Item>
+				<FlexboxGrid.Item colspan={8}>
+					<Stack spacing={6} style={{ marginBottom: "5px" }}>
+						<div style={{ width: "160px", textAlign: "right" }}>
+							Pictures:
+						</div>
+
+						<InputPicker
+							data={quoteData}
+							value={pictures}
+							onChange={(e) => {
+								setPictures(e);
+								pullDetails(query);
+							}}
+							style={{ width: "200px" }}
+						/>
+					</Stack>
+				</FlexboxGrid.Item>
+			</FlexboxGrid>
+
 			<Stack spacing={6} style={{ marginBottom: "5px" }}>
-				PO Number:
-				<Input
-					placeholder="PO"
-					value={po}
-					onChange={(e) => {
-						setPO(e);
-						pullDetails(query);
-					}}
-					style={{ width: "200px" }}
-				/>
-			</Stack>
-			<Stack spacing={6} style={{ marginBottom: "5px" }}>
-				Quote Required:
-				<InputPicker
-					data={quoteData}
-					value={quote}
-					onChange={(e) => {
-						setQuote(e);
-						pullDetails(query);
-					}}
-					style={{ width: "200px" }}
-				/>
-			</Stack>
-			<Stack spacing={6} style={{ marginBottom: "5px" }}>
-				Equipment:
-				<InputPicker
-					data={equipmentData}
-					value={equipment}
-					onChange={(e) => {
-						setEquipment(e);
-						pullDetails(query);
-					}}
-					style={{ width: "200px" }}
-				/>
-			</Stack>
-			<Stack spacing={6} style={{ marginBottom: "5px" }}>
-				Application:
-				<InputPicker
-					data={applicationData}
-					value={application}
-					onChange={(e) => {
-						setApplication(e);
-						pullDetails(query);
-					}}
-					style={{ width: "200px" }}
-				/>
-				<Input
-					data={other}
-					disabled={application !== "Other"}
-					onChange={(e) => {
-						setOther(e);
-						pullDetails(query);
-					}}
-				/>
-			</Stack>
-			<Stack spacing={6} style={{ marginBottom: "5px" }}>
-				urgency:
-				<InputPicker
-					data={urgencyData}
-					value={urgency}
-					onChange={(e) => {
-						setUrgency(e);
-						pullDetails(query);
-					}}
-					style={{ width: "200px" }}
-				/>
-				<DatePicker
-					disabled={urgency !== "Specific Time"}
-					value={specificTime}
-					onChange={(e) => {
-						setSpecificTime(e);
-						pullDetails(query);
-					}}
-				/>
-			</Stack>
-			<Stack spacing={6} style={{ marginBottom: "5px" }}>
-				Pictures:
-				<InputPicker
-					data={quoteData}
-					value={pictures}
-					onChange={(e) => {
-						setPictures(e);
-						pullDetails(query);
-					}}
-					style={{ width: "200px" }}
-				/>
-			</Stack>
-			<Stack spacing={6} style={{ marginBottom: "5px" }}>
-				Eyebolt Damaged:
+				<div style={{ width: "160px", textAlign: "right" }}>
+					Eyebolt Damaged:
+				</div>
+
 				<InputPicker
 					data={quoteData}
 					value={eyeboltDamaged}
@@ -207,8 +203,61 @@ function JobDetails({ job, pullDetails }) {
 					style={{ width: "200px" }}
 				/>
 			</Stack>
+
 			<Stack spacing={6} style={{ marginBottom: "5px" }}>
-				Customer Comments:
+				<div style={{ width: "160px", textAlign: "right" }}>
+					Application:
+				</div>
+
+				<InputPicker
+					data={applicationData}
+					value={application}
+					onChange={(e) => {
+						setApplication(e);
+						pullDetails(query);
+					}}
+					style={{ width: "200px" }}
+				/>
+				<Input
+					style={{ width: "200px" }}
+					data={other}
+					disabled={application !== "Other"}
+					onChange={(e) => {
+						setOther(e);
+						pullDetails(query);
+					}}
+				/>
+			</Stack>
+			<Stack spacing={6} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "160px", textAlign: "right" }}>
+					urgency:
+				</div>
+
+				<InputPicker
+					data={urgencyData}
+					value={urgency}
+					onChange={(e) => {
+						setUrgency(e);
+						pullDetails(query);
+					}}
+					style={{ width: "200px" }}
+				/>
+				<DatePicker
+					disabled={urgency !== "Specific Date"}
+					value={specificTime}
+					style={{ width: "200px" }}
+					onChange={(e) => {
+						setSpecificTime(e);
+						pullDetails(query);
+					}}
+				/>
+			</Stack>
+
+			<Stack spacing={6} style={{ marginBottom: "5px" }}>
+				<div style={{ width: "160px", textAlign: "right" }}>
+					Customer Comments:
+				</div>
+
 				<Stack.Item grow={1}>
 					<Input
 						placeholder="Customer Comments"
@@ -222,7 +271,10 @@ function JobDetails({ job, pullDetails }) {
 			</Stack>
 
 			<Stack spacing={6} style={{ marginBottom: "5px" }}>
-				Parts Missing Or Broken:
+				<div style={{ width: "160px", textAlign: "right" }}>
+					Parts Missing Or Broken:
+				</div>
+
 				<Stack.Item grow={1}>
 					<Input
 						placeholder="Parts Missing Or Broken"
@@ -235,16 +287,20 @@ function JobDetails({ job, pullDetails }) {
 				</Stack.Item>
 			</Stack>
 			<Stack spacing={6} style={{ marginBottom: "5px" }}>
-				Signature:
-				<Input
-					placeholder="signature"
-					value={signature}
-					onChange={(e) => {
-						setSignature(e);
-						pullDetails(query);
-					}}
-					style={{ width: "200px" }}
-				/>
+				<div style={{ width: "160px", textAlign: "right" }}>
+					Signature:
+				</div>
+				<Stack.Item grow={1}>
+					<Input
+						placeholder="signature"
+						value={signature}
+						onChange={(e) => {
+							setSignature(e);
+							pullDetails(query);
+						}}
+						style={{ width: "200px" }}
+					/>
+				</Stack.Item>
 			</Stack>
 		</div>
 	);
