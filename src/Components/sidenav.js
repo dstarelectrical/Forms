@@ -41,7 +41,7 @@ function SideNav() {
 						<Nav.Item
 							eventKey="1"
 							onClick={(e) => {
-								navigate("/home");
+								navigate("/forms");
 								setActiveKey("1");
 							}}
 						>
@@ -50,7 +50,7 @@ function SideNav() {
 						<Nav.Item
 							eventKey="2"
 							onClick={(e) => {
-								navigate("/alljobs");
+								navigate("/forms/alljobs");
 								setActiveKey("2");
 							}}
 						>
@@ -59,7 +59,7 @@ function SideNav() {
 						<Nav.Item
 							eventKey="3"
 							onClick={(e) => {
-								navigate("/newjob");
+								navigate("/forms/newjob");
 								setActiveKey("3");
 							}}
 						>

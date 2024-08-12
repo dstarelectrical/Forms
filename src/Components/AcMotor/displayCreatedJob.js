@@ -72,7 +72,7 @@ function DisplayJobDetails({ jobDet }) {
 	};
 
 	const handleEditClick = (motor) => {
-		navigate("/addmotor", {
+		navigate("/forms/addmotor", {
 			state: {
 				...motor,
 				jobId: jobDet["id"],
@@ -82,7 +82,7 @@ function DisplayJobDetails({ jobDet }) {
 	};
 
 	const handleEditCustomerClick = (motor) => {
-		navigate("/addcustomer", {
+		navigate("/forms/addcustomer", {
 			state: {
 				...customer,
 				jobId: jobDet["id"],
@@ -92,7 +92,7 @@ function DisplayJobDetails({ jobDet }) {
 	};
 
 	const handleEditJobClick = () => {
-		navigate("/newjob", {
+		navigate("/forms/newjob", {
 			state: {
 				job: job,
 				motor: motor,

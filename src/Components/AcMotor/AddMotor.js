@@ -200,7 +200,7 @@ function AddAcMotor() {
 		})
 			.then((res) => {
 				if (res.status === 200) {
-					navigate(`/job/${jobId}`);
+					navigate(`/forms/job/${jobId}`);
 					notifySuccessPost("motor edited successfully");
 				} else if (res.status !== 200) {
 					notifyFailedPost("error editing the motor");

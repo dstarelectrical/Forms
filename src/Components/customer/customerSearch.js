@@ -41,7 +41,7 @@ function CustomerSearch({ pullCustomer }) {
 	};
 
 	const handleAddClick = () => {
-		navigate("/addcustomer", {
+		navigate("/forms/addcustomer", {
 			state: {
 				edit: false,
 			},

@@ -68,7 +68,7 @@ function AllJobs() {
 						}}
 					/>
 					<IconButton
-						onClick={(e) => navigate("/job/" + search)}
+						onClick={(e) => navigate("/forms/job/" + search)}
 						icon={<SearchIcon />}
 					/>
 				</InputGroup>
@@ -88,7 +88,7 @@ function AllJobs() {
 									<IconButton
 										appearance="subtle"
 										onClick={(e) =>
-											navigate("/job/" + job.id)
+											navigate("/forms/job/" + job.id)
 										}
 										style={{
 											float: "right",

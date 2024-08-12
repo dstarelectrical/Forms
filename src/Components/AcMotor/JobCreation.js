@@ -44,7 +44,7 @@ function JobCreation() {
 			.then((res) => {
 				console.log(res);
 				if (res.status === 200) {
-					navigate("/job/" + res.data.id, { replace: true });
+					navigate("/forms/job/" + res.data.id, { replace: true });
 				}
 			})
 			.catch((error) => {

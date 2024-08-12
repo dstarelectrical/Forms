@@ -17,7 +17,6 @@ import { FcInspection } from "react-icons/fc";
 import { FaRegComments } from "react-icons/fa6";
 import SearchIcon from "@rsuite/icons/Search";
 import SideNav from "./sidenav";
-import { set } from "rsuite/esm/internals/utils/date";
 
 function Home() {
 	const [search, setSearch] = useState("");
@@ -194,7 +193,7 @@ function Home() {
 									<IconButton
 										appearance="subtle"
 										onClick={(e) =>
-											navigate("/job/" + job.id)
+											navigate("/forms/job/" + job.id)
 										}
 										style={{
 											float: "right",

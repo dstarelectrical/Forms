@@ -5,8 +5,7 @@ class Calender extends React.Component {
 	render() {
 		const opts = {
 			height: "480",
-			width: "844",
-			marginTop: "20px",
+			width: "100%",
 			playerVars: {
 				autoplay: 1,
 			},
@@ -16,16 +15,20 @@ class Calender extends React.Component {
 			<div
 				style={{
 					height: "100vh",
-					width: "100vh",
+					width: "100vhw",
+					paddingLeft: "9rem",
+					paddingRight: "9rem",
 					contentAlign: "center",
 					display: "block",
 					marginLeft: "auto",
 					marginRight: "auto",
+					backgroundColor: "#07020d",
+					fontFamily: "Inconsolata",
+					color: "#F1E9DB",
 				}}
 			>
 				<div
 					style={{
-						fontFamily: "Inter, sans-serif",
 						fontWeight: "bold",
 						fontSize: "30px",
 						width: "100%",
@@ -36,7 +39,6 @@ class Calender extends React.Component {
 				</div>
 				<div
 					style={{
-						fontFamily: "Inter, sans-serif",
 						fontSize: "15px",
 						width: "100%",
 						textAlign: "center",
@@ -55,17 +57,25 @@ class Calender extends React.Component {
 						functionalities.
 					</p>
 				</div>
-				<YouTube
-					videoId="JZIRJZeEVUs"
-					opts={opts}
-					onReady={this._onReady}
-				/>
+				<div
+					style={{
+						paddingRight: "6rem",
+						paddingRight: "6rem",
+						marginTop: "20px",
+						width: "100%",
+					}}
+				>
+					<YouTube
+						videoId="JZIRJZeEVUs"
+						opts={opts}
+						onReady={this._onReady}
+					/>
+				</div>
 
 				<p
 					style={{
 						fontWeight: "bold",
 						textAlign: "left",
-						fontFamily: "Inter, sans-serif",
 						fontSize: "15px",
 						width: "100%",
 					}}
@@ -75,7 +85,6 @@ class Calender extends React.Component {
 				<p
 					style={{
 						textAlign: "left",
-						fontFamily: "Inter, sans-serif",
 						fontSize: "15px",
 						width: "100%",
 					}}

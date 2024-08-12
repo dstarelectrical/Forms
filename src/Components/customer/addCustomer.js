@@ -96,7 +96,7 @@ function AddCustomer() {
 			.then((res) => {
 				console.log(res);
 				if (res.status === 200) {
-					navigate(`/job/${jobId}`);
+					navigate(`/forms/job/${jobId}`);
 					notifySuccessPost("customer edited successfully");
 				}
 			})

@@ -65,7 +65,7 @@ function AcMotorSearch({ pullMotor }) {
 	}));
 
 	const handleAddClick = () => {
-		navigate("/addmotor", {
+		navigate("/forms/addmotor", {
 			state: {
 				volts: volts,
 				frame: frame,
